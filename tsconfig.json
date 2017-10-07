@@ -8,6 +8,7 @@
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
+        "declaration": true,
         "sourceMap": true,
         "outFile": "ui5ts.js"
     },
