@@ -5,15 +5,24 @@ A ridiculously simple adapter to develop SAPUI5 and OpenUI5 applications using T
 
 ## How to use
 
+It is very simple, make it work with only 4 steps:
+
+1. Install *ui5ts*, *typescript* and *@types/openui5* npm packages
+2. Add a reference to the "library" in your index.html
+3. Add the required TypeScript options in the tsconfig.json
+4. Change your `<class-name>.js` to a `<class-name>.ts`
+
 Check this Master-Detail example app https://github.com/lmcarreiro/ui5-typescript-example that is already working with ui5+typescript.
 
-### 1) Install the package
+### 1) Install *ui5ts*, *typescript* and *@types/openui5* npm packages
 
 ```
+npm install @types/openui5 --save-dev
+npm install typescript --save-dev
 npm install ui5ts --save
 ```
 
-### 2) Add a reference to the "library"
+### 2) Add a reference to the "library" in your index.html
 
 Put a reference to the `ui5ts.js` script in your `index.html` file using a script tag `<script src="node_modules/ui5ts/ui5ts.js" type="text/javascript"></script>` between the `sap-ui-core.js` script tag and the `sap.ui.getCore().attachInit()` call:
 
@@ -31,7 +40,50 @@ Put a reference to the `ui5ts.js` script in your `index.html` file using a scrip
 ...
 ```
 
-### 3) Change your `<class-name>.js` to a `<class-name>.ts`.
+### 3) Add the required TypeScript options in the tsconfig.json
+
+ - compilerOptions.module = `"amd"`
+ - compilerOptions.experimentalDecorators = `true` *(just to avoid typescript warning/error)*
+ - compilerOptions.baseUrl = `"./"` *(your project root, if you change this value, you need to change the paths too)*
+ - compilerOptions.paths = `{ ... }` *(your paths, relative to your baseUrl, check the example bellow)*
+ - files = `["node_modules/ui5ts/ui5ts.d.ts", ...]`
+
+Example of `tsconfig.json` file:
+```json
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "experimentalDecorators": true,
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "sourceMap": true,
+        "baseUrl": "./",
+        "paths": {
+            "your/app/namespace/*": [ "./src/*" ],
+            "sap/*": [ "./mySapExports/sap/*" ]
+        }
+    },
+    "files": [
+        "node_modules/ui5ts/ui5ts.d.ts"
+    ],
+    "include": [
+        "src/**/*",
+        "mySapExports/**/*",
+        "node_modules/@types"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
+```
+
+
+### 4) Change your `<class-name>.js` to a `<class-name>.ts`
 
 #### UI5 JavaScript way:
 ```javascript
@@ -86,14 +138,15 @@ namespace typescript.example.ui5app
 export default typescript.example.ui5app.Component;
 ```
 
- - Don't forget to decorate your class with `@UI5("your.full.namespace.ClassName")`, this decorator parameter will be passed to `BaseClass.extend("your.full.namespace.ClassName", { ... });` call at runtime.
+#### Don't forget
+
+ - You need to decorate your class with `@UI5("your.full.namespace.ClassName")`, this decorator parameter will be passed to `BaseClass.extend("your.full.namespace.ClassName", { ... });` call at runtime.
  - You need to export your class as default export at the end of the file: `export default your.full.namespace.ClassName;`
- - If your class has the ui5 metadata object, doesn't forget to declare it as `static`
- - The TypeScript module generation option (key `compilerOptions -> module` in `tsconfig.json`) must be set to `"amd"`
+ - If your class has the ui5 metadata object, define it as `static`
  - The paths in the `import` statements must be the same as it would be if you were using `sap.ui.define()` function. The TypeScript compiler will generate an AMD module with a `define()` call with these paths, and the `define()` function that **ui5ts** overrides will call the real `sap.ui.define()` function. This is the way that **ui5ts** works.
  - If `your/app/namespace/is/too/big`, you don't need to have all this levels of directories in your physical project structure, you can create a virtual mapping using the `tsconfig.json` configuration option `paths` (see it in the common problems bellow).
 
-### 4) Resolving common typescript errors and module resolution problems
+## Resolving common typescript errors and module resolution problems
 
 **Problem:** Doesn't find the @UI5 decorator:
 ```typescript
