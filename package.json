@@ -19,7 +19,9 @@
     },
     "devDependencies": {
         "@types/jquery": "^2.0.47",
+        "@types/node": "^8.0.33",
         "@types/openui5": "^1.40.2",
+        "@types/request": "^2.0.4",
         "typescript": "^2.5.2"
     },
     "scripts": {
