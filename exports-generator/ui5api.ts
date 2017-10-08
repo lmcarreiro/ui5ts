@@ -18,6 +18,11 @@ export interface Symbol
     visibility: "public"|"private";
 }
 
+export interface SymbolNamespace extends Symbol
+{
+    kind: "namespace";
+}
+
 export interface SymbolClass extends Symbol
 {
     kind: "class";

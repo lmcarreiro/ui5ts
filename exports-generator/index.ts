@@ -43,7 +43,21 @@ function createExports(api: ui5.API): void
 
 function exportSymbol(symbol: ui5.Symbol): void
 {
-    if (symbol.kind === "class")
+    if (symbol.name.match(/^jquery/i))
+    {
+        return;
+    }
+
+    if (symbol.kind == "namespace" && symbol.name.replace(/[.]/g, "/") === symbol.module)
+    {
+        var sNamespace = <ui5.SymbolNamespace>symbol;
+
+        var path = basePath + sNamespace.resource.replace(/[.]js$/g, ".d.ts");
+        var content = `export default ${sNamespace.name};`
+
+        createFile(path, content);
+    }
+    else if (symbol.kind === "class")
     {
         var sClass = <ui5.SymbolClass>symbol;
 
