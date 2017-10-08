@@ -1,5 +1,5 @@
 {
-    "version": "0.0.7",
+    "version": "0.1.0",
     "name": "ui5ts",
     "description": "a ridiculously simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes",
     "keywords": [
@@ -19,10 +19,14 @@
     },
     "devDependencies": {
         "@types/jquery": "^2.0.47",
+        "@types/node": "^8.0.33",
         "@types/openui5": "^1.40.2",
+        "@types/request": "^2.0.4",
         "typescript": "^2.5.2"
     },
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "exports": "npm run exports:build && node exports-generator/index.js",
+        "exports:build": "tsc -p exports-generator/tsconfig.json"
     }
 }

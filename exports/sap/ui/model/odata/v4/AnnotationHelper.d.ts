@@ -1,0 +1,1 @@
+export default sap.ui.model.odata.v4.AnnotationHelper;

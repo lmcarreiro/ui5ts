@@ -64,7 +64,7 @@ Example of `tsconfig.json` file:
         "baseUrl": "./",
         "paths": {
             "your/app/namespace/*": [ "./src/*" ],
-            "sap/*": [ "./mySapExports/sap/*" ]
+            "sap/*": [ "./node_modules/ui5ts/exports/sap/*" ]
         }
     },
     "files": [
@@ -72,7 +72,6 @@ Example of `tsconfig.json` file:
     ],
     "include": [
         "src/**/*",
-        "mySapExports/**/*",
         "node_modules/@types"
     ],
     "exclude": [
@@ -221,14 +220,7 @@ import UIComponent from "sap/ui/core/UIComponent";
 ...
 ```
 
-**Solution:** The solution in this case are still ugly, but I didn't have time to make it better. Using the npm @types/openui5 package to get the definition files of OpenUI5, for each class in the `sap.*` namespace that I need to import, I need to create a `*.d.ts` file in a corresponding `sap/*` folder that exports the @types/openui5 declaration of this class as default export.
-
-Example: to import `"sap/ui/core/UIComponent"` I need to create a `mySapExports/sap/ui/core/UIComponent.d.ts` with the following content:
-```typescript
-export default sap.ui.core.UIComponent;
-```
-
-With that done, you still need to map the path to your `mySapExports` folder in yout `tsconfig.json` file, make sure you did it:
+**Solution:** Make sure you have mapped the **ui5ts** exports folder in your paths of the `tsconfig.json`:
 
 ```diff
 ...
@@ -237,9 +229,11 @@ With that done, you still need to map the path to your `mySapExports` folder in 
     "baseUrl": "./",
     "paths": {
         ...
-+       "sap/*": [ "./mySapExports/sap/*" ]
++       "sap/*": [ "./node_modules/ui5ts/exports/sap/*" ]
     }
 ...
 ```
 
-I'll try to find another solution or to create all the `*.d.ts` export files in the correct structure with the corresponding default exports and put inside **ui5ts** package in a future version. Pull Requests welcome here.
+If the problem still remains, please, create an issue in the github project:
+
+https://github.com/lmcarreiro/ui5ts/issues

@@ -1,0 +1,1 @@
+export default sap.m.PlanningCalendar;
