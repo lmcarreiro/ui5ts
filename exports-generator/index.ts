@@ -50,19 +50,15 @@ function exportSymbol(symbol: ui5.Symbol): void
 
     if (symbol.kind == "namespace" && symbol.name.replace(/[.]/g, "/") === symbol.module)
     {
-        var sNamespace = <ui5.SymbolNamespace>symbol;
-
-        var path = basePath + sNamespace.resource.replace(/[.]js$/g, ".d.ts");
-        var content = `export default ${sNamespace.name};`
+        var path = basePath + symbol.resource.replace(/[.]js$/g, ".d.ts");
+        var content = `export default ${symbol.name};`
 
         createFile(path, content);
     }
     else if (symbol.kind === "class")
     {
-        var sClass = <ui5.SymbolClass>symbol;
-
-        var path = basePath + sClass.name.replace(/[.]/g, "/") + ".d.ts";
-        var content = `export default ${sClass.name};`
+        var path = basePath + symbol.name.replace(/[.]/g, "/") + ".d.ts";
+        var content = `export default ${symbol.name};`
 
         createFile(path, content);
     }

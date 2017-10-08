@@ -5,9 +5,8 @@ export interface API
     version: string;
 }
 
-export interface Symbol
+export interface SymbolBase
 {
-    kind: "namespace"|"class"|"interface"|"enum";
     basename: string;
     description: string;
     export: string;
@@ -18,12 +17,12 @@ export interface Symbol
     visibility: "public"|"private";
 }
 
-export interface SymbolNamespace extends Symbol
+export interface SymbolNamespace extends SymbolBase
 {
     kind: "namespace";
 }
 
-export interface SymbolClass extends Symbol
+export interface SymbolClass extends SymbolBase
 {
     kind: "class";
     constructor: any;
@@ -32,6 +31,8 @@ export interface SymbolClass extends Symbol
     static: boolean;
     ["ui5-metadata"]: any;
 }
+
+export type Symbol = SymbolNamespace|SymbolClass;
 
 export interface Method
 {
