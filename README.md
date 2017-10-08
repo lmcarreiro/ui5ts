@@ -22,6 +22,8 @@ npm install typescript --save-dev
 npm install ui5ts --save
 ```
 
+If you already have your own \*.d.ts declaration files of sap.* ui5 namespaces, you won't need to install the *@types/openui5* npm package.
+
 ### 2) Add a reference to the "library" in your index.html
 
 Put a reference to the `ui5ts.js` script in your `index.html` file using a script tag `<script src="node_modules/ui5ts/ui5ts.js" type="text/javascript"></script>` between the `sap-ui-core.js` script tag and the `sap.ui.getCore().attachInit()` call:
