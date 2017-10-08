@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "none",
         "experimentalDecorators": true,
         "alwaysStrict": true,
@@ -8,16 +8,13 @@
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "declaration": true,
-        "sourceMap": true,
-        "outFile": "ui5ts.js"
+        "sourceMap": true
     },
     "include": [
-        "src/**/*",
-        "node_modules/@types"
+        "./",
+        "../node_modules/@types"
     ],
     "exclude": [
-        "exports-generator",
         "node_modules",
         "**/*.spec.ts"
     ]

@@ -23,6 +23,7 @@
         "typescript": "^2.5.2"
     },
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "exports": "tsc -p exports-generator/tsconfig.json && node exports-generator/index.js"
     }
 }
