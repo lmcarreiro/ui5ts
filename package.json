@@ -26,6 +26,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "exports": "tsc -p exports-generator/tsconfig.json && node exports-generator/index.js"
+        "exports": "npm run exports:build && node exports-generator/index.js",
+        "exports:build": "tsc -p exports-generator/tsconfig.json"
     }
 }
