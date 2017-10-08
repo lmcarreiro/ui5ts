@@ -1,0 +1,1 @@
+export default sap.m.semantic.ShareMenuPage;

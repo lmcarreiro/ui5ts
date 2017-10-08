@@ -1,0 +1,1 @@
+export default sap.ui.core.util.serializer.ViewSerializer;
