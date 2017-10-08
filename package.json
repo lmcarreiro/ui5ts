@@ -18,6 +18,8 @@
         "url": "https://github.com/lmcarreiro/ui5ts/issues"
     },
     "devDependencies": {
+        "@types/jquery": "^2.0.47",
+        "@types/openui5": "^1.40.2",
         "typescript": "^2.5.2"
     },
     "scripts": {
