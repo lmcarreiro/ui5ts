@@ -116,33 +116,28 @@ sap.ui.define([
 import UIComponent  from "sap/ui/core/UIComponent";
 import models       from "typescript/example/ui5app/model/models";
 
-namespace typescript.example.ui5app
+@UI5("typescript.example.ui5app.Component")
+export default class Component extends UIComponent
 {
-    @UI5("typescript.example.ui5app.Component")
-    export class Component extends UIComponent
-    {
-        public static metadata: any = {
-            manifest : "json"
-        };
+    public static metadata: any = {
+        manifest : "json"
+    };
 
-        public init(): void {
-            // set the device model
-            this.setModel(models.createDeviceModel(), "device");
-            // call the base component's init function and create the App view
-            super.init();
-            // create the views based on the url/hash
-            this.getRouter().initialize();
-        }
+    public init(): void {
+        // set the device model
+        this.setModel(models.createDeviceModel(), "device");
+        // call the base component's init function and create the App view
+        super.init();
+        // create the views based on the url/hash
+        this.getRouter().initialize();
     }
 }
-
-export default typescript.example.ui5app.Component;
 ```
 
 #### Don't forget
 
  - You need to decorate your class with `@UI5("your.full.namespace.ClassName")`, this decorator parameter will be passed to `BaseClass.extend("your.full.namespace.ClassName", { ... });` call at runtime.
- - You need to export your class as default export at the end of the file: `export default your.full.namespace.ClassName;`
+ - You need to export your class as default export.
  - If your class has the ui5 metadata object, define it as `static`
  - The paths in the `import` statements must be the same as it would be if you were using `sap.ui.define()` function. The TypeScript compiler will generate an AMD module with a `define()` call with these paths, and the `define()` function that **ui5ts** overrides will call the real `sap.ui.define()` function. This is the way that **ui5ts** works.
  - If `your/app/namespace/is/too/big`, you don't need to have all this levels of directories in your physical project structure, you can create a virtual mapping using the `tsconfig.json` configuration option `paths` (see it in the common problems bellow).
@@ -154,7 +149,7 @@ export default typescript.example.ui5app.Component;
 ...
 // error TS2304: Cannot find name 'UI5'.
 @UI5("your.full.namespace.ClassName")
-export class Component extends UIComponent {
+export default class Component extends UIComponent {
 ...
 ```
 
