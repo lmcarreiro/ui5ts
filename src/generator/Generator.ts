@@ -24,7 +24,7 @@ export default class Generator
         "sap/uxap"
     ]
     
-    generate(): void
+    public generate(): void
     {
         console.log(`Starting exports generation...`);
         
@@ -34,7 +34,7 @@ export default class Generator
     }
     
     
-    exportNamespace(namespace: string): void
+    private exportNamespace(namespace: string): void
     {
         let url = `${this.apiBaseUrl}/${namespace}/${this.apiUrlSuffix}`;
     
@@ -42,7 +42,7 @@ export default class Generator
         request({ url: url, json: true }, (error, response, body) => this.processJsonApi(url, error, response, body));
     }
     
-    processJsonApi(url: string, error: any, response: request.RequestResponse, body: any): void
+    private processJsonApi(url: string, error: any, response: request.RequestResponse, body: any): void
     {
         if (!error && response.statusCode === 200) {
             console.log(`Got response from '${url}'`);
@@ -54,12 +54,12 @@ export default class Generator
         }
     }
     
-    createExports(api: ui5.API): void
+    private createExports(api: ui5.API): void
     {
         api.symbols.forEach(s => this.exportSymbol(s));
     }
     
-    exportSymbol(symbol: ui5.Symbol): void
+    private exportSymbol(symbol: ui5.Symbol): void
     {
         if (symbol.name.match(/^jquery/i))
         {
@@ -82,7 +82,7 @@ export default class Generator
         }
     }
     
-    createFile(path: string, content: string): void
+    private createFile(path: string, content: string): void
     {
         var dirPieces = path.replace(/\/[^/]+$/, "").split("/");
     
@@ -101,7 +101,7 @@ export default class Generator
                 return console.log(err);
             }
         
-            console.log(`File saved: ${path}`);
+            //console.log(`File saved: ${path}`);
         });
     }
 }

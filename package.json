@@ -30,10 +30,9 @@
         "typescript": "^2.5.2"
     },
     "scripts": {
-        "start": "npm run build:gulp && gulp",
-        "build:gulp": "tsc gulpfile.ts --experimentalDecorators",
-        "build:web": "tsc -p src/web/tsconfig.json",
+        "start": "npm run generate && npm run build:web",
+        "generate": "npm run build:generator && node src/generator/index.js",
         "build:generator": "tsc -p src/generator/tsconfig.json",
-        "generate": "npm run exports:build && node src/generator/index.js"
+        "build:web": "tsc -p src/web/tsconfig.json"
     }
 }
