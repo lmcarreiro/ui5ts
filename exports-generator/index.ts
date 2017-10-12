@@ -5,10 +5,23 @@ import * as ui5 from './ui5api';
 
 var basePath = "./exports/";
 
+var apiBaseUrl = "https://sapui5.hana.ondemand.com/test-resources";
+var apiUrlSuffix = "designtime/api.json";
+
 var namespaces = [
-    "https://sapui5.hana.ondemand.com/test-resources/sap/ui/core/designtime/api.json",
-    "https://sapui5.hana.ondemand.com/test-resources/sap/m/designtime/api.json"
-];
+    "sap/m",
+    "sap/tnt",
+    "sap/ui/commons",
+    "sap/ui/core",
+    "sap/ui/demokit",
+    "sap/ui/dt",
+    "sap/ui/layout",
+    "sap/ui/suite",
+    "sap/ui/table",
+    "sap/ui/unified",
+    "sap/ui/ux3",
+    "sap/uxap"
+]
 
 
 console.log(`Starting exports generation...`);
@@ -18,8 +31,10 @@ namespaces.forEach(url => exportNamespace(url));
 console.log(`All requests made.`);
 
 
-function exportNamespace(url: string): void
+function exportNamespace(namespace: string): void
 {
+    let url = `${apiBaseUrl}/${namespace}/${apiUrlSuffix}`;
+
     console.log(`Making request to '${url}'`);
     request({ url: url, json: true }, (error, response, body) => processJsonApi(url, error, response, body));
 }
@@ -27,7 +42,7 @@ function exportNamespace(url: string): void
 function processJsonApi(url: string, error: any, response: request.RequestResponse, body: any): void
 {
     if (!error && response.statusCode === 200) {
-        console.log(`Got response from '${url}'`);    
+        console.log(`Got response from '${url}'`);
         createExports(response.body);
     }
     else {
