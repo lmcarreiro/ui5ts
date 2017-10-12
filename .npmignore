@@ -1,6 +1,5 @@
 .vscode
 .editorconfig
 .gitattributes
-.npmignore
 tsconfig.json
-exports-generator
+src/generator
