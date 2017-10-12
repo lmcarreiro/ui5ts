@@ -30,9 +30,9 @@
         "typescript": "^2.5.2"
     },
     "scripts": {
-        "start": "npm run generate && npm run build:web",
+        "start": "npm run generate && npm run build:lib",
         "generate": "npm run build:generator && node src/generator/index.js",
         "build:generator": "tsc -p src/generator/tsconfig.json",
-        "build:web": "tsc -p src/web/tsconfig.json"
+        "build:lib": "tsc -p src/lib/tsconfig.json"
     }
 }
