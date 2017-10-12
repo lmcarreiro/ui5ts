@@ -1,1 +1,0 @@
-export default sap.m.TreeItemBase;

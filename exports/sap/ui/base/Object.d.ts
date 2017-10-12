@@ -1,1 +1,0 @@
-export default sap.ui.base.Object;

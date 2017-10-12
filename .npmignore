@@ -1,9 +1,3 @@
-node_modules
-*.js
-*.js.map
-!/ui5ts.js
-!/ui5ts.js.map
-
 .vscode
 .editorconfig
 .gitattributes

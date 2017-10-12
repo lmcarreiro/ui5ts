@@ -1,1 +1,0 @@
-export default sap.ui.model.analytics.BatchResponseCollector;
