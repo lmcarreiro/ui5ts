@@ -17,7 +17,7 @@
         "node_modules/@types"
     ],
     "exclude": [
-        "exports-generator",
+        "src/generator",
         "node_modules",
         "**/*.spec.ts"
     ]
