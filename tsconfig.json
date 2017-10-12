@@ -2,23 +2,13 @@
     "compilerOptions": {
         "target": "es5",
         "module": "none",
-        "moduleResolution": "classic",
+        "moduleResolution": "node",
         "experimentalDecorators": true,
         "alwaysStrict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "sourceMap": true,
-        "declaration": true,
-        "outFile": "ui5ts.js"
-    },
-    "include": [
-        "./",
-        "node_modules/@types"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+        "sourceMap": true
+    }
 }
