@@ -34,9 +34,11 @@ export default class Generator
 
         Promise.all(requests)
             .then(apiList => this.execute(apiList))
-            .catch(error => console.log("Errors", error));
+            .catch(error => {
+                console.log("\x1b[31m", `\n\n  Error: ${error}\n\n`);
+                process.exit(1);
+            });
     }
-    
     
     private getApiJson(namespace: string): Promise<ui5.API>
     {
@@ -51,8 +53,8 @@ export default class Generator
                     resolve(response.body);
                 }
                 else {
-                    console.log(`Error from '${url}'`);
-                    reject(error);
+                    console.log(`Got error from '${url}'`);
+                    reject(`${response.statusCode} - ${response.statusMessage}`);
                 }
             });
         });
