@@ -28,32 +28,41 @@ export default class Generator
     {
         console.log(`Starting exports generation...`);
         
-        this.namespaces.forEach(url => this.exportNamespace(url));
+        var requests = this.namespaces.map(url => this.getApiJson(url));
         
         console.log(`All requests made.`);
+
+        Promise.all(requests)
+            .then(apiList => this.execute(apiList))
+            .catch(error => console.log("Errors", error));
     }
     
     
-    private exportNamespace(namespace: string): void
+    private getApiJson(namespace: string): Promise<ui5.API>
     {
         let url = `${this.apiBaseUrl}/${namespace}/${this.apiUrlSuffix}`;
-    
+
         console.log(`Making request to '${url}'`);
-        request({ url: url, json: true }, (error, response, body) => this.processJsonApi(url, error, response, body));
+
+        return new Promise((resolve: (api: ui5.API) => void, reject: (error: any) => void) => {
+            request({ url: url, json: true }, (error, response, body) => {
+                if (!error && response.statusCode === 200) {
+                    console.log(`Got response from '${url}'`);
+                    resolve(response.body);
+                }
+                else {
+                    console.log(`Error from '${url}'`);
+                    reject(error);
+                }
+            });
+        });
     }
     
-    private processJsonApi(url: string, error: any, response: request.RequestResponse, body: any): void
+    private execute(apiList: ui5.API[]): void
     {
-        if (!error && response.statusCode === 200) {
-            console.log(`Got response from '${url}'`);
-            this.createExports(response.body);
-        }
-        else {
-            console.log(`Error from '${url}'`);
-            console.log(error);
-        }
+        console.log("Success. " + apiList.length);
     }
-    
+
     private createExports(api: ui5.API): void
     {
         api.symbols.forEach(s => this.exportSymbol(s));
