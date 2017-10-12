@@ -11,7 +11,7 @@
         "noImplicitThis": true,
         "sourceMap": true,
         "declaration": true,
-        "outFile": "ui5ts.js"
+        "outFile": "../../ui5ts.js"
     },
     "include": [
         "./",
