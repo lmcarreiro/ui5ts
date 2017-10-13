@@ -34,7 +34,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
 
     private generateNamespace(output: string[], symbol: ui5.SymbolNamespace): void
     {
-        output.push(`${this.indentation}${this.indentationLevel > 0 ? "export " : ""}namespace ${symbol.basename} {\r\n`);
+        output.push(`${this.indentation}namespace ${symbol.basename} {\r\n`);
         this.children.forEach(c => c.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
     }
@@ -43,7 +43,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
     {
         //is nested inside a class?
         if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
-            output.push(`${this.indentation.slice(0, -4)}export namespace ${this.parent.content.basename} {\r\n`);
+            output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
 
         output.push(`${this.indentation}export class ${symbol.basename} {\r\n`);
@@ -62,7 +62,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
     {
         //is nested inside a class?
         if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
-            output.push(`${this.indentation.slice(0, -4)}export namespace ${this.parent.content.basename} {\r\n`);
+            output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
 
         output.push(`${this.indentation}export interface ${symbol.basename} {\r\n`);
@@ -79,7 +79,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
     {
         //is nested inside a class?
         if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
-            output.push(`${this.indentation.slice(0, -4)}export namespace ${this.parent.content.basename} {\r\n`);
+            output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
         
         output.push(`${this.indentation}export enum ${symbol.basename} {\r\n`);

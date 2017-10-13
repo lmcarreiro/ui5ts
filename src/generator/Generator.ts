@@ -6,7 +6,8 @@ import SapTreeNode from './SapTreeNode';
 
 export default class Generator
 {
-    private basePath = "./exports/";
+    private baseExportsPath = "./exports/";
+    private baseDefinitionsPath = "./types/";
     
     private apiBaseUrl = "https://sapui5.hana.ondemand.com/test-resources";
     private apiUrlSuffix = "designtime/api.json";
@@ -64,6 +65,12 @@ export default class Generator
     
     private execute(apiList: ui5.API[]): void
     {
+        this.createExports(apiList);
+        this.createDefinitions(apiList);
+    }
+
+    private createDefinitions(apiList: ui5.API[]): void
+    {
         let kinds: {[index: string]: {name:string;num:number}[]} = {};
         let v: string[] = [];
         let allSymbols = apiList.map(api => api.symbols).reduce((a, b) => a.concat(b));
@@ -74,17 +81,17 @@ export default class Generator
         let jQueryTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0);
         let jQueryOutput: string[] = [];
         let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
-        this.createFile("./jQuery.d.ts", jQueryOutput.join(""));
+        this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
 
         let sapTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0);
         let sapOutput: string[] = [];
         let tsSap = sapTree.generateTypeScriptCode(sapOutput);
-        this.createFile("./sap.d.ts", sapOutput.join(""));
+        this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
     }
 
-    private createExports(api: ui5.API): void
+    private createExports(apiList: ui5.API[]): void
     {
-        api.symbols.forEach(s => this.exportSymbol(s));
+        apiList.forEach(api => api.symbols.forEach(s => this.exportSymbol(s)));
     }
     
     private exportSymbol(symbol: ui5.Symbol): void
@@ -96,14 +103,14 @@ export default class Generator
     
         if (symbol.kind == "namespace" && symbol.name.replace(/[.]/g, "/") === symbol.module)
         {
-            var path = this.basePath + symbol.resource.replace(/[.]js$/g, ".d.ts");
+            var path = this.baseExportsPath + symbol.resource.replace(/[.]js$/g, ".d.ts");
             var content = `export default ${symbol.name};`
     
             this.createFile(path, content);
         }
         else if (symbol.kind === "class")
         {
-            var path = this.basePath + symbol.name.replace(/[.]/g, "/") + ".d.ts";
+            var path = this.baseExportsPath + symbol.name.replace(/[.]/g, "/") + ".d.ts";
             var content = `export default ${symbol.name};`
     
             this.createFile(path, content);
