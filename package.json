@@ -27,7 +27,7 @@
         "gulp-typescript": "^3.2.2",
         "gulpclass": "^0.1.2",
         "request": "^2.83.0",
-        "typescript": "^2.5.2"
+        "typescript": "next"
     },
     "scripts": {
         "start": "npm run generate && npm run build:lib",
