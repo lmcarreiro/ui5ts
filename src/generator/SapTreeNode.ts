@@ -131,7 +131,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             let visibilityModifier = m.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
             let staticModifier = m.static ? "static " : "";
             let returnType = m.returnValue ? this.mapType(this.overrideMethodReturnType(symbol.name, m)) : "void";
-            let parameters = (m.parameters || []).map(p => `${p.name}${p.optional ? "?" : ""}: ${this.mapType(p.type)}`);
+            let parameters = (m.parameters || []).map(p => `${p.name.replace(/<[^>]+>/g, "")}${p.optional ? "?" : ""}: ${this.mapType(p.type)}`);
 
             this.printTsDoc(output, m, 1);
             output.push(`${this.indentation}    ${visibilityModifier}${staticModifier}${m.name}(${parameters.join(", ")}): ${returnType};\r\n`);
@@ -140,6 +140,10 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
 
     private mapType(typeName: string): string
     {
+        if (typeName.indexOf("|") > -1) {
+            return typeName.split("|").map(t => this.mapType(t)).join("|");
+        }
+        
         switch (typeName) {
             case "function":    return "Function";
             case "int":         return "number";
@@ -148,6 +152,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             case "domRef":      return "HTMLElement";
             case "DomNode":     return "HTMLElement";
             case "jQuery":      return "JQuery";
+            case "Map":         return "{ [key: string]: any }";
             default:            return typeName;
         }
     }
