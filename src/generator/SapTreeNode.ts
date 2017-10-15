@@ -131,9 +131,10 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             let visibilityModifier = m.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
             let staticModifier = m.static ? "static " : "";
             let returnType = m.returnValue ? this.mapType(this.overrideMethodReturnType(symbol.name, m)) : "void";
+            let parameters = (m.parameters || []).map(p => `${p.name}${p.optional ? "?" : ""}: ${this.mapType(p.type)}`);
 
             this.printTsDoc(output, m, 1);
-            output.push(`${this.indentation}    ${visibilityModifier}${staticModifier}${m.name}(): ${returnType};\r\n`);
+            output.push(`${this.indentation}    ${visibilityModifier}${staticModifier}${m.name}(${parameters.join(", ")}): ${returnType};\r\n`);
         });
     }
 
