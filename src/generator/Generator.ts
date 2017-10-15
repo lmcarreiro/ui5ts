@@ -99,6 +99,9 @@ export default class Generator
     {
         var a: { [kind: string]: { [property: string]: number } } = {};
         var enumPropertyProperties: { [property: string]: number } = {};
+        var classMethodProperties: { [method: string]: number } = {};
+        var classMethodParameterProperties: { [property: string]: number } = {};
+        var classMethodParameterPropertyProperties: { [property: string]: number } = {};
 
         for (let s of symbols) {
             a[s.kind] = a[s.kind] || {};
@@ -111,10 +114,10 @@ export default class Generator
 
             if (s.kind === ui5.Kind.Enum) {
                 if (s.properties) {
-                    for (let pp in s.properties) {
-                        for (let ppp in s.properties[pp]) {
-                            enumPropertyProperties[ppp] = enumPropertyProperties[ppp] || 0;
-                            enumPropertyProperties[ppp]++;
+                    for (let property in s.properties) {
+                        for (let propertyProperty in s.properties[property]) {
+                            enumPropertyProperties[propertyProperty] = enumPropertyProperties[propertyProperty] || 0;
+                            enumPropertyProperties[propertyProperty]++;
                         }
                     }
                 }
@@ -123,10 +126,41 @@ export default class Generator
                 }
             }
 
+            if (s.kind === ui5.Kind.Class) {
+                if (s.methods) {
+                    for (let method in s.methods) {
+                        for (let methodProperty in s.methods[method]) {
+                            classMethodProperties[methodProperty] = classMethodProperties[methodProperty] || 0;
+                            classMethodProperties[methodProperty]++;
+                        }
+                        let parameters = s.methods[method].parameters || [];
+                        for (let parameter in parameters) {
+                            for (let parameterProperty in parameters[parameter]) {
+                                classMethodParameterProperties[parameterProperty] = classMethodParameterProperties[parameterProperty] || 0;
+                                classMethodParameterProperties[parameterProperty]++;
+                            }
+                            if (parameters[parameter].parameterProperties) {
+                                for (let parameterPropertyPropertyName in parameters[parameter].parameterProperties) {
+                                    for (let parameterPropertyProperty in parameters[parameter].parameterProperties[parameterPropertyPropertyName])
+                                    classMethodParameterPropertyProperties[parameterPropertyProperty] = classMethodParameterPropertyProperties[parameterPropertyProperty] || 0;
+                                    classMethodParameterPropertyProperties[parameterPropertyProperty]++;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    console.log(s.name);
+                }
+            }
+
         }
 
         //console.log(a);
         //console.log(enumPropertyProperties);
+        //console.log(classMethodProperties);
+        //console.log(classMethodParameterProperties);
+        console.log(classMethodParameterPropertyProperties);
     }
 
     private createExports(apiList: ui5.API[]): void

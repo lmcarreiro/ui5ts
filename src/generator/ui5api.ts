@@ -25,6 +25,7 @@ export interface ApiElement
     description?: string;
     deprecated?: boolean;
     since?: string;
+    experimental?: boolean;
 }
 
 export interface SymbolBase extends ApiElement
@@ -46,7 +47,6 @@ export interface SymbolNamespace extends SymbolBase
     methods?: Method[];
     properties?: Property[];
     extends?: string;
-    experimental?: boolean;
     final?: boolean;
 }
 
@@ -61,7 +61,6 @@ export interface SymbolClass extends SymbolBase
     extends?: string;
     implements?: string[];
     abstract?: boolean;
-    experimental?: boolean;
     final?: boolean;
     "ui5-metadata"?: any;
 }
@@ -71,7 +70,6 @@ export interface SymbolEnum extends SymbolBase
     kind: Kind.Enum;
 
     properties?: EnumProperty[];
-    experimental?: string;
 }
 
 export interface SymbolInterface extends SymbolBase
@@ -92,7 +90,29 @@ export interface EnumProperty extends ApiElement
 
 export interface Method extends ApiElement
 {
-    //TODO: fill this
+    name: string;
+    visibility: Visibility;
+    returnValue?: string;
+    parameters?: MethodParameter[];
+    static?: boolean;
+    module?: string;
+    resource?: string;
+    examples?: any;
+}
+
+export interface MethodParameter extends ApiElement
+{
+    name: string;
+    type: string;
+    optional: boolean;
+    description?: string;
+    defaultValue?: string;
+    parameterProperties?: MethodParameterProperty[];
+}
+
+export interface MethodParameterProperty extends ApiElement
+{
+
 }
 
 export interface Property extends ApiElement

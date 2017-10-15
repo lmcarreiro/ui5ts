@@ -47,7 +47,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         }
 
         output.push(`${this.indentation}export class ${symbol.basename} {\r\n`);
-        //... methods, properties, events
+        this.generateMethods(output, symbol.methods);
         output.push(`${this.indentation}}\r\n`);
 
         //is nested inside a class?
@@ -114,6 +114,14 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             this.printTsDoc(output, p, 1);
             output.push(`${this.indentation}    ${p.name} = "${p.name}",\r\n`);
         });
+    }
+    
+    private generateMethods(output: string[], methods?: ui5.Method[]): void
+    {
+        // (methods || []).forEach(m => {
+        //     this.printTsDoc(output, m, 1);
+        //     output.push(`${this.indentation}    ${m.} = "${p.name}",\r\n`);
+        // });
     }
 
 }
