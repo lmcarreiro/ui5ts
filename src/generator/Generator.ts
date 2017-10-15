@@ -9,7 +9,9 @@ export default class Generator
     private baseExportsPath = "./exports/";
     private baseDefinitionsPath = "./types/";
     
+    private getFromLocal = true;
     private apiBaseUrl = "https://sapui5.hana.ondemand.com/test-resources";
+    private apiBasePath = "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.6/test-resources";
     private apiUrlSuffix = "designtime/api.json";
     
     private namespaces = [
@@ -45,22 +47,42 @@ export default class Generator
     
     private getApiJson(namespace: string): Promise<ui5.API>
     {
-        let url = `${this.apiBaseUrl}/${namespace}/${this.apiUrlSuffix}`;
+        if (this.getFromLocal) {
+            let path = `${this.apiBasePath}/${namespace}/${this.apiUrlSuffix}`.replace(/\//g, "\\");
 
-        console.log(`Making request to '${url}'`);
+            console.log(`Making local file '${path}'`);
 
-        return new Promise((resolve: (api: ui5.API) => void, reject: (error: any) => void) => {
-            request({ url: url, json: true }, (error, response, body) => {
-                if (!error && response.statusCode === 200) {
-                    console.log(`Got response from '${url}'`);
-                    resolve(response.body);
-                }
-                else {
-                    console.log(`Got error from '${url}'`);
-                    reject(`${response.statusCode} - ${response.statusMessage}`);
-                }
+            return new Promise((resolve: (api: ui5.API) => void, reject: (error: any) => void) => {
+                fs.readFile(path, { encoding: "utf-8" }, (err, data) => {
+                    if (!err) {
+                        console.log(`Got content from '${path}'`);
+                        resolve(JSON.parse(data))
+                    }
+                    else {
+                        console.log(`Got error from '${path}'`);
+                        reject(`${err}`);
+                    }
+                });
             });
-        });
+        }
+        else {
+            let url = `${this.apiBaseUrl}/${namespace}/${this.apiUrlSuffix}`;
+            
+            console.log(`Making request to '${url}'`);
+
+            return new Promise((resolve: (api: ui5.API) => void, reject: (error: any) => void) => {
+                request({ url: url, json: true }, (error, response, body) => {
+                    if (!error && response && response.statusCode === 200) {
+                        console.log(`Got response from '${url}'`);
+                        resolve(response.body);
+                    }
+                    else {
+                        console.log(`Got error from '${url}'`);
+                        reject(`${response.statusCode} - ${response.statusMessage}`);
+                    }
+                });
+            });
+        }
     }
     
     private execute(apiList: ui5.API[]): void
