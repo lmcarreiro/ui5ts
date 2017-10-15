@@ -78,12 +78,12 @@ export default class Generator
         allSymbols.sort((a, b) => a.name.localeCompare(b.name));
 
         //TreeNode.createFromSymbolsArray<JqueryTreeNode>(JqueryTreeNode, allSymbols.filter(s => s.name.startsWith("jQuery.")), "jQuery", 0);
-        let jQueryTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0);
+        let jQueryTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0)[0];
         let jQueryOutput: string[] = [];
         let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
         this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
 
-        let sapTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0);
+        let sapTree = TreeNode.createFromSymbolsArray<SapTreeNode>(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0)[0];
         let sapOutput: string[] = [];
         let tsSap = sapTree.generateTypeScriptCode(sapOutput);
         this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));

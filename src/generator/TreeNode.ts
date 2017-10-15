@@ -22,39 +22,38 @@ export default abstract class TreeNode<T extends TreeNode<T>>
         this.indentation = new Array(indentationLevel + 1/* + (isNestedClass ? 1 : 0)*/).join("    ");
     }
 
-    protected addChild(child: T): TreeNode<T>
+    protected addChildren(children: T[]): TreeNode<T>
     {
-        this.children.push(child);
+        this.children = this.children.concat(children);
         return this;
     }
 
     public abstract generateTypeScriptCode(output: string[]): void;
 
-    public static createFromSymbolsArray<T extends TreeNode<T>>(treeType: TreeNodeConstructor<T>, symbols: ui5.Symbol[], parent: T|null, indentationLevel: number): T
+    public static createFromSymbolsArray<T extends TreeNode<T>>(treeType: TreeNodeConstructor<T>, symbols: ui5.Symbol[], parent: T|null, indentationLevel: number): T[]
     {
-        let content = symbols[0];
-        let rest = symbols.slice(1);
+        let nodes: T[] = [];
+        let namespaces = new Set<string>();
+        symbols
+            .map(s => s.name.split(".").slice(0, indentationLevel + 1).join("."))
+            .forEach(n => namespaces.add(n));
 
-        let childrenByParent: { [name: string]: ui5.Symbol[] } = {};
+        for (var namespace of namespaces) {
+            var parentSymbol = symbols.find(s => s.name === namespace) || <ui5.SymbolNamespace>{
+                name: namespace
+                , basename: namespace.replace(/^.*[.]/, "")
+                , kind: ui5.Kind.Namespace
+            };
+            var childrenSymbols = symbols.filter(s => s.name.startsWith(namespace + "."));
 
-        let lastParent: string|undefined;
-        for (let s of rest) {
-            if (!lastParent || !s.name.startsWith(lastParent + ".")) {
-                lastParent = s.name;
-                childrenByParent[lastParent] = [];
-            }
+            var newNode: T = new treeType(parentSymbol, indentationLevel, parent);
+            var children = TreeNode.createFromSymbolsArray<T>(treeType, childrenSymbols, newNode, indentationLevel + 1);
 
-            childrenByParent[lastParent].push(s);
+            newNode.addChildren(children);
+
+            nodes.push(newNode);
         }
 
-        var treeNode: T = new treeType(content, indentationLevel, parent);
-
-        let children: T[] = [];
-        for (let nextParent in childrenByParent) {
-            var child = TreeNode.createFromSymbolsArray<T>(treeType, childrenByParent[nextParent], treeNode, indentationLevel + 1);
-            treeNode.addChild(child);
-        }
-
-        return treeNode;
+        return nodes;
     }
 }
