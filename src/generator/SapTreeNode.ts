@@ -145,15 +145,17 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         }
         
         switch (typeName) {
-            case "function":    return "Function";
-            case "int":         return "number";
-            case "float":       return "number";
-            case "DOMRef":      return "HTMLElement";
-            case "domRef":      return "HTMLElement";
-            case "DomNode":     return "HTMLElement";
-            case "jQuery":      return "JQuery";
-            case "Map":         return "{ [key: string]: any }";
-            default:            return typeName;
+            case "function":                    return "Function";
+            case "int":                         return "number";
+            case "float":                       return "number";
+            case "DOMRef":                      return "HTMLElement";
+            case "domRef":                      return "HTMLElement";
+            case "DomNode":                     return "HTMLElement";
+            case "jQuery":                      return "JQuery";
+            case "Map":                         return "{ [key: string]: any }";
+            case "ODataAnnotations~Source":     return "{ [key: string]: any }";
+            case "sap.m.IconTabBarSelectList":  return "sap.m.SelectList";
+            default:                            return typeName;
         }
     }
 
