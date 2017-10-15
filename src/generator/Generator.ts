@@ -87,6 +87,46 @@ export default class Generator
         let sapOutput: string[] = [];
         let tsSap = sapTree.generateTypeScriptCode(sapOutput);
         this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
+
+        this.printData(allSymbols);
+    }
+
+    /**
+     * This method just print api data to help identify and understand de API structure and define it in ui5api.ts
+     * @param symbols Symbols array
+     */
+    private printData(symbols: ui5.Symbol[]): void
+    {
+        var a: { [kind: string]: { [property: string]: number } } = {};
+        var enumPropertyProperties: { [property: string]: number } = {};
+
+        for (let s of symbols) {
+            a[s.kind] = a[s.kind] || {};
+
+            for (let p in s) {
+                a[s.kind][p] = a[s.kind][p] || 0;
+                a[s.kind][p]++;
+
+            }
+
+            if (s.kind === ui5.Kind.Enum) {
+                if (s.properties) {
+                    for (let pp in s.properties) {
+                        for (let ppp in s.properties[pp]) {
+                            enumPropertyProperties[ppp] = enumPropertyProperties[ppp] || 0;
+                            enumPropertyProperties[ppp]++;
+                        }
+                    }
+                }
+                else {
+                    //console.log(s.name);
+                }
+            }
+
+        }
+
+        //console.log(a);
+        //console.log(enumPropertyProperties);
     }
 
     private createExports(apiList: ui5.API[]): void

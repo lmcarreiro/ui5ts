@@ -14,17 +14,28 @@ export enum Kind {
     Interface   = "interface"
 }
 
-export interface SymbolBase
+export enum Visibility {
+    Public      = "public",
+    Protected   = "protected",
+    Restricted  = "restricted",
+}
+
+export interface ApiElement
+{
+    description?: string;
+    deprecated?: boolean;
+    since?: string;
+}
+
+export interface SymbolBase extends ApiElement
 {
     name: string;
     basename: string;
     resource: string;
     module: string;
-    visibility: "public"|"protected"|"restricted";
-    description?: string;
+    visibility: Visibility;
     export?: string;
     static?: boolean;
-    since?: string;
 }
 
 export interface SymbolNamespace extends SymbolBase
@@ -35,7 +46,6 @@ export interface SymbolNamespace extends SymbolBase
     methods?: Method[];
     properties?: Property[];
     extends?: string;
-    deprecated?: boolean;
     experimental?: boolean;
     final?: boolean;
 }
@@ -51,7 +61,6 @@ export interface SymbolClass extends SymbolBase
     extends?: string;
     implements?: string[];
     abstract?: boolean;
-    deprecated?: boolean;
     experimental?: boolean;
     final?: boolean;
     "ui5-metadata"?: any;
@@ -61,8 +70,7 @@ export interface SymbolEnum extends SymbolBase
 {
     kind: Kind.Enum;
 
-    properties?: Property[];
-    deprecated?: boolean;
+    properties?: EnumProperty[];
     experimental?: string;
 }
 
@@ -74,17 +82,25 @@ export interface SymbolInterface extends SymbolBase
     methods?: Method[];
 }
 
-export interface Method
+export interface EnumProperty extends ApiElement
+{
+    name: string;
+    visibility: Visibility;
+    static: boolean;
+    type: string;
+}
+
+export interface Method extends ApiElement
 {
     //TODO: fill this
 }
 
-export interface Property
+export interface Property extends ApiElement
 {
     //TODO: fill this
 }
 
-export interface Event
+export interface Event extends ApiElement
 {
     //TODO: fill this
 }

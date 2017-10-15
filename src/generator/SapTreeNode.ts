@@ -82,7 +82,9 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
         
+        this.printTsDoc(output, symbol, 0);
         output.push(`${this.indentation}export enum ${symbol.basename.replace(/^.*[.]/, "")} {\r\n`);
+        this.generateEnumContent(output, symbol);
         this.children.forEach(c => c.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
         
@@ -90,6 +92,28 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
             output.push(`${this.indentation.slice(0, -4)}}\r\n`);
         }
+    }
+
+    private printTsDoc(output: string[], element: ui5.ApiElement, innerIndentation: number): void
+    {
+        let indentation = this.indentation + new Array(innerIndentation + 1).join("    ");
+
+        output.push(`${indentation}/**\r\n`);
+        
+        if (element.description) {
+            let lines = element.description.split(/\r?\n/);
+            lines.forEach(line => output.push(`${indentation} * ${line}\r\n`));
+        }
+
+        output.push(`${indentation} */\r\n`);
+    }
+
+    private generateEnumContent(output: string[], symbol: ui5.SymbolEnum): void
+    {
+        (symbol.properties || []).forEach(p => {
+            this.printTsDoc(output, p, 1);
+            output.push(`${this.indentation}    ${p.name} = "${p.name}",\r\n`);
+        });
     }
 
 }
