@@ -82,7 +82,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
         
-        output.push(`${this.indentation}export enum ${symbol.basename} {\r\n`);
+        output.push(`${this.indentation}export enum ${symbol.basename.replace(/^.*[.]/, "")} {\r\n`);
         this.children.forEach(c => c.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
         
