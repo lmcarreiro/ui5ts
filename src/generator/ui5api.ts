@@ -92,7 +92,7 @@ export interface Method extends ApiElement
 {
     name: string;
     visibility: Visibility;
-    returnValue?: string;
+    returnValue?: { type: string, description: string };
     parameters?: MethodParameter[];
     static?: boolean;
     module?: string;
@@ -112,7 +112,12 @@ export interface MethodParameter extends ApiElement
 
 export interface MethodParameterProperty extends ApiElement
 {
-
+    name: string;
+    type: string;
+    optional: boolean;
+    description?: string;
+    defaultValue?: string;
+    parameterProperties?: MethodParameterProperty[];
 }
 
 export interface Property extends ApiElement

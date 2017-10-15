@@ -10,10 +10,6 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
 
     public generateTypeScriptCode(output: string[]): void
     {
-        if (this.indentationLevel === 0) {
-            output.push("declare ");
-        }
-
         switch (this.content.kind) {
             case ui5.Kind.Namespace:
                 this.generateNamespace(output, this.content);
@@ -34,9 +30,22 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
 
     private generateNamespace(output: string[], symbol: ui5.SymbolNamespace): void
     {
-        output.push(`${this.indentation}namespace ${symbol.basename} {\r\n`);
-        this.children.forEach(c => c.generateTypeScriptCode(output));
-        output.push(`${this.indentation}}\r\n`);
+        var type = this.typeDefinedAsNamespace(symbol.name);
+
+        this.printTsDoc(output, symbol, 0);
+        if (!type) {
+            
+            if (this.indentationLevel === 0) {
+                output.push("declare ");
+            }
+
+            output.push(`${this.indentation}namespace ${symbol.basename} {\r\n`);
+            this.children.forEach(c => c.generateTypeScriptCode(output));
+            output.push(`${this.indentation}}\r\n`);
+        }
+        else {
+            output.push(`${this.indentation}export type ${symbol.basename} = ${type};\r\n`);
+        }
     }
 
     private generateClass(output: string[], symbol: ui5.SymbolClass): void
@@ -47,7 +56,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         }
 
         output.push(`${this.indentation}export class ${symbol.basename} {\r\n`);
-        this.generateMethods(output, symbol.methods);
+        this.generateMethods(output, symbol);
         output.push(`${this.indentation}}\r\n`);
 
         //is nested inside a class?
@@ -101,7 +110,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         output.push(`${indentation}/**\r\n`);
         
         if (element.description) {
-            let lines = element.description.split(/\r?\n/);
+            let lines = element.description.split(/\r|\n|\r\n/g);
             lines.forEach(line => output.push(`${indentation} * ${line}\r\n`));
         }
 
@@ -116,12 +125,53 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         });
     }
     
-    private generateMethods(output: string[], methods?: ui5.Method[]): void
+    private generateMethods(output: string[], symbol: ui5.SymbolClass): void
     {
-        // (methods || []).forEach(m => {
-        //     this.printTsDoc(output, m, 1);
-        //     output.push(`${this.indentation}    ${m.} = "${p.name}",\r\n`);
-        // });
+        (symbol.methods || []).forEach(m => {
+            let visibilityModifier = m.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
+            let staticModifier = m.static ? "static " : "";
+            let returnType = m.returnValue ? this.mapType(this.overrideMethodReturnType(symbol.name, m)) : "void";
+
+            this.printTsDoc(output, m, 1);
+            output.push(`${this.indentation}    ${visibilityModifier}${staticModifier}${m.name}(): ${returnType};\r\n`);
+        });
     }
 
+    private mapType(typeName: string): string
+    {
+        switch (typeName) {
+            case "function":    return "Function";
+            case "int":         return "number";
+            case "float":       return "number";
+            case "DOMRef":      return "HTMLElement";
+            case "domRef":      return "HTMLElement";
+            case "DomNode":     return "HTMLElement";
+            case "jQuery":      return "JQuery";
+            default:            return typeName;
+        }
+    }
+
+    private overrideMethodReturnType(parentName: string, method: ui5.Method): string
+    {
+        let methodName = parentName + "." + method.name;
+        let originalReturnValue = (method.returnValue && method.returnValue.type) || "void";
+
+        switch(methodName) {
+            case "sap.m.MenuButton.setTooltip":                             return "sap.m.MenuButton";
+            case "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent":  return "sap.ui.core.Control[]";
+            default:                                                        return originalReturnValue;
+        }
+    }
+
+    private typeDefinedAsNamespace(namespace: string): string|undefined
+    {
+        switch(namespace)
+        {
+            case "sap.ui.core.ID":          return "string";
+            case "sap.ui.core.URI":         return "string";
+            case "sap.ui.core.CSSSize":     return "string";
+            case "sap.ui.core.CSSColor":    return "string";
+            default:                        return;
+        }
+    }
 }

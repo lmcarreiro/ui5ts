@@ -150,7 +150,7 @@ export default class Generator
                     }
                 }
                 else {
-                    console.log(s.name);
+                    //console.log(s.name);
                 }
             }
 
@@ -160,7 +160,7 @@ export default class Generator
         //console.log(enumPropertyProperties);
         //console.log(classMethodProperties);
         //console.log(classMethodParameterProperties);
-        console.log(classMethodParameterPropertyProperties);
+        //console.log(classMethodParameterPropertyProperties);
     }
 
     private createExports(apiList: ui5.API[]): void
