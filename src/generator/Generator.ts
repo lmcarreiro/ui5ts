@@ -141,9 +141,10 @@ export default class Generator
                             }
                             let parameterProperties = parameters[parameter].parameterProperties || [];
                             for (let parameterPropertyPropertyName in parameterProperties) {
-                                for (let parameterPropertyProperty in parameterProperties[parameterPropertyPropertyName])
-                                classMethodParameterPropertyProperties[parameterPropertyProperty] = classMethodParameterPropertyProperties[parameterPropertyProperty] || 0;
-                                classMethodParameterPropertyProperties[parameterPropertyProperty]++;
+                                for (let parameterPropertyProperty in parameterProperties[parameterPropertyPropertyName]) {
+                                    classMethodParameterPropertyProperties[parameterPropertyProperty] = classMethodParameterPropertyProperties[parameterPropertyProperty] || 0;
+                                    classMethodParameterPropertyProperties[parameterPropertyProperty]++;
+                                }
                             }
                         }
                     }
