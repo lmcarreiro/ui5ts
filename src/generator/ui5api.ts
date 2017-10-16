@@ -26,6 +26,7 @@ export interface ApiElement
     deprecated?: boolean;
     since?: string;
     experimental?: boolean;
+    parameters?: MethodParameter[];
 }
 
 export interface SymbolBase extends ApiElement

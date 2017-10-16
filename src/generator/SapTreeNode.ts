@@ -114,6 +114,10 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             lines.forEach(line => output.push(`${indentation} * ${line}\r\n`));
         }
 
+        if (element.parameters) {
+            element.parameters.forEach(p => output.push(`${indentation} * @param {${this.mapType(p.type)}} ${p.name} - ${p.description}.\r\n`));
+        }
+
         output.push(`${indentation} */\r\n`);
     }
 
