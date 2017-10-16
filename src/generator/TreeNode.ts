@@ -1,6 +1,8 @@
 import * as ui5 from './ui5api';
 
-type TreeNodeConstructor<T extends TreeNode<T>> = new(content: ui5.Symbol, indentationLevel: number, parent: T|null) => T;
+interface TreeNodeConstructor<T extends TreeNode<T>> {
+    new(content: ui5.Symbol, indentationLevel: number, parent: T|null): T;
+}
 
 export default abstract class TreeNode<T extends TreeNode<T>>
 {
