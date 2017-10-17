@@ -32,7 +32,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
     {
         var type = this.typeDefinedAsNamespace(symbol.name);
 
-        this.printTsDoc(output, symbol, 0);
+        this.printTsDoc(output, 0, symbol);
         if (!type) {
             
             if (this.indentationLevel === 0) {
@@ -91,7 +91,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
         }
         
-        this.printTsDoc(output, symbol, 0);
+        this.printTsDoc(output, 0, symbol);
         output.push(`${this.indentation}export enum ${symbol.basename.replace(/^.*[.]/, "")} {\r\n`);
         this.generateEnumContent(output, symbol);
         this.children.forEach(c => c.generateTypeScriptCode(output));
@@ -103,7 +103,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         }
     }
 
-    private printTsDoc(output: string[], element: ui5.ApiElement, innerIndentation: number): void
+    private printTsDoc(output: string[], innerIndentation: number, element: ui5.ApiElement, parent?: ui5.ApiElement): void
     {
         let indentation = this.indentation + new Array(innerIndentation + 1).join("    ");
 
@@ -113,9 +113,18 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
             let lines = element.description.split(/\r|\n|\r\n/g);
             lines.forEach(line => output.push(`${indentation} * ${line}\r\n`));
         }
+        
+        if (parent && (element.parameters || element.returnValue)) {
+            let methodOwner = <ui5.SymbolClass|ui5.SymbolInterface|ui5.SymbolNamespace>parent;
+            let method = <ui5.Method>element;
+            
+            (method.parameters || []).forEach(p => {
+                output.push(`${indentation} * @param {${this.mapType(this.overrideMethodParameter(methodOwner.name, method, p))}} ${p.name} - ${p.description}.\r\n`);
+            });
 
-        if (element.parameters) {
-            element.parameters.forEach(p => output.push(`${indentation} * @param {${this.mapType(p.type)}} ${p.name} - ${p.description}.\r\n`));
+            if (method.returnValue && parent.name) {
+                output.push(`${indentation} * @returns {${this.mapType(this.overrideMethodReturnType(methodOwner.name, method))}} ${method.returnValue.description}.\r\n`);
+            }
         }
 
         output.push(`${indentation} */\r\n`);
@@ -124,20 +133,20 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
     private generateEnumContent(output: string[], symbol: ui5.SymbolEnum): void
     {
         (symbol.properties || []).forEach(p => {
-            this.printTsDoc(output, p, 1);
+            this.printTsDoc(output, 1, p);
             output.push(`${this.indentation}    ${p.name} = "${p.name}",\r\n`);
         });
     }
     
-    private generateMethods(output: string[], symbol: ui5.SymbolClass): void
+    private generateMethods(output: string[], symbol: ui5.SymbolNamespace|ui5.SymbolInterface|ui5.SymbolClass): void
     {
         (symbol.methods || []).forEach(m => {
             let visibilityModifier = m.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
             let staticModifier = m.static ? "static " : "";
             let returnType = m.returnValue ? this.mapType(this.overrideMethodReturnType(symbol.name, m)) : "void";
-            let parameters = (m.parameters || []).map(p => `${p.name.replace(/<[^>]+>/g, "")}${p.optional ? "?" : ""}: ${this.mapType(p.type)}`);
+            let parameters = (m.parameters || []).map(p => `${p.name.replace(/<[^>]+>/g, "")}${p.optional ? "?" : ""}: ${this.mapType(this.overrideMethodParameter(symbol.name, m, p))}`);
 
-            this.printTsDoc(output, m, 1);
+            this.printTsDoc(output, 1, m, symbol);
             output.push(`${this.indentation}    ${visibilityModifier}${staticModifier}${m.name}(${parameters.join(", ")}): ${returnType};\r\n`);
         });
     }
@@ -163,6 +172,19 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         }
     }
 
+    private overrideMethodParameter(parentName: string, method: ui5.Method, parameter: ui5.MethodParameter): string
+    {
+        let fullName = `${parentName}.${method.name}.${parameter.name}`;
+        let originalType = parameter.type;
+
+        switch(fullName) {
+            case "sap.ui.base.ManagedObject.propagateMessages.aMessages":   return "string[]";
+            case "sap.m.P13nConditionPanel.setKeyFields.aKeyFields":        return "{ key: string, text: string }[]";
+            case "sap.ui.model.analytics.AnalyticalBinding.sort.aSorter":   return "sap.ui.model.Sorter|sap.ui.model.Sorter[]";
+            default:                                                        return originalType;
+        }
+    }
+
     private overrideMethodReturnType(parentName: string, method: ui5.Method): string
     {
         let methodName = parentName + "." + method.name;
@@ -171,6 +193,7 @@ export default class SapTreeNode extends TreeNode<SapTreeNode>
         switch(methodName) {
             case "sap.m.MenuButton.setTooltip":                             return "sap.m.MenuButton";
             case "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent":  return "sap.ui.core.Control[]";
+            case "sap.m.P13nConditionPanel.getKeyFields":                   return "{ key: string, text: string }[]";
             default:                                                        return originalReturnValue;
         }
     }

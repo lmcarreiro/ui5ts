@@ -22,11 +22,13 @@ export enum Visibility {
 
 export interface ApiElement
 {
+    name?: string;
     description?: string;
     deprecated?: boolean;
     since?: string;
     experimental?: boolean;
     parameters?: MethodParameter[];
+    returnValue?: { type: string, description: string };
 }
 
 export interface SymbolBase extends ApiElement
