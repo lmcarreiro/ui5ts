@@ -100,25 +100,25 @@ export default class Generator
 
         allSymbols.sort((a, b) => a.name.localeCompare(b.name));
 
-        //TreeNode.createFromSymbolsArray<JqueryTreeNode>(JqueryTreeNode, allSymbols.filter(s => s.name.startsWith("jQuery.")), "jQuery", 0);
-        // let jQueryTree = TreeNode.createFromSymbolsArray(JQuerySapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0)[0];
-        // let jQueryOutput: string[] = [];
-        // let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
-        // this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
+        let jQueryTree = TreeNode.createFromSymbolsArray(JQuerySapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0)[0];
+        let jQueryOutput: string[] = [];
+        let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
+        this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
 
-        // let sapTree = TreeNode.createFromSymbolsArray(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0)[0];
-        // let sapOutput: string[] = [];
-        // let tsSap = sapTree.generateTypeScriptCode(sapOutput);
-        // this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
+        let sapTree = TreeNode.createFromSymbolsArray(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0)[0];
+        let sapOutput: string[] = [];
+        let tsSap = sapTree.generateTypeScriptCode(sapOutput);
+        this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
 
-        this.printData(allSymbols);
+        // Uncomment this to see the details, statistics and example values of the different types of API members
+        // this.printApiData(allSymbols);
     }
 
     /**
      * This method just print api data to help identify and understand de API structure and define it in ui5api.ts
      * @param symbols Symbols array
      */
-    private printData(symbols: ui5.Symbol[]): void
+    private printApiData(symbols: ui5.Symbol[]): void
     {
         var result: { [name: string]: any } = {};
         var object: { [name: string]: any[] } = {};
