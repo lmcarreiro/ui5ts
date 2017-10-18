@@ -1,9 +1,7 @@
 import * as request         from 'request';
 import * as fs              from 'fs';
 import * as ui5             from './ui5api';
-import TreeNode             from './TreeNode';
-import SapTreeNode          from './SapTreeNode';
-import JQuerySapTreeNode    from './JQuerySapTreeNode';
+import TreeNode             from './nodeTypes/base/TreeNode';
 
 export default class Generator
 {
@@ -94,18 +92,18 @@ export default class Generator
 
     private createDefinitions(apiList: ui5.API[]): void
     {
-        let kinds: {[index: string]: {name:string;num:number}[]} = {};
-        let v: string[] = [];
         let allSymbols = apiList.map(api => api.symbols).reduce((a, b) => a.concat(b));
 
         allSymbols.sort((a, b) => a.name.localeCompare(b.name));
 
-        let jQueryTree = TreeNode.createFromSymbolsArray(JQuerySapTreeNode, allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/)), null, 0)[0];
+        let jQuerySymbols = allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/));
+        let jQueryTree = TreeNode.createFromSymbolsArray(jQuerySymbols);
         let jQueryOutput: string[] = [];
         let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
         this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
 
-        let sapTree = TreeNode.createFromSymbolsArray(SapTreeNode, allSymbols.filter(s => s.name.match(/^sap([.]|$)/)), null, 0)[0];
+        let sapSymbols = allSymbols.filter(s => s.name.match(/^sap([.]|$)/));
+        let sapTree = TreeNode.createFromSymbolsArray(sapSymbols);
         let sapOutput: string[] = [];
         let tsSap = sapTree.generateTypeScriptCode(sapOutput);
         this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
