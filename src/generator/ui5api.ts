@@ -39,11 +39,7 @@ export interface ReturnValueInfo {
     description?: string;
 }
 
-export interface SymbolBase {
-
-}
-
-export interface SymbolNamespace extends SymbolBase {
+export interface SymbolNamespace {
     kind: Kind.Namespace;
 
     visibility: Visibility;
@@ -67,7 +63,7 @@ export interface SymbolNamespace extends SymbolBase {
     experimental?: ExperimentalInfo;
 }
 
-export interface SymbolClass extends SymbolBase {
+export interface SymbolClass {
     kind: Kind.Class;
 
     visibility: Visibility;
@@ -96,7 +92,7 @@ export interface SymbolClass extends SymbolBase {
     ["ui5-metadata"]?: any;
 }
 
-export interface SymbolEnum extends SymbolBase {
+export interface SymbolEnum {
     kind: Kind.Enum;
 
     visibility: Visibility;
@@ -107,7 +103,7 @@ export interface SymbolEnum extends SymbolBase {
     resource: string;
     description?: string;
 
-    properties?: EnumProperty[];
+    properties?: Property[];
 
     export?: string;
     since?: string;
@@ -116,9 +112,9 @@ export interface SymbolEnum extends SymbolBase {
     experimental?: ExperimentalInfo;
 }
 
-export interface SymbolInterface extends SymbolBase {
+export interface SymbolInterface {
     kind: Kind.Interface;
-    
+
     visibility: Visibility;
 
     name: string;
@@ -143,20 +139,8 @@ export interface ClassContructor {
     visibility: Visibility;
 
     description?: string;
-    parameters?: MethodParameter[];
+    parameters?: Parameter[];
     examples?: ExampleInfo[];
-}
-
-export interface EnumProperty {
-    visibility: Visibility;
-
-    name: string;
-    static: boolean; // all true
-    type: string;
-    description?: string;
-
-    since?: string;
-    deprecated?: DeprecatedInfo;
 }
 
 export interface Method {
@@ -167,7 +151,7 @@ export interface Method {
     resource?: string;
     description?: string;
     returnValue?: ReturnValueInfo;
-    parameters?: MethodParameter[];
+    parameters?: Parameter[];
 
     export?: string;
     since?: string;
@@ -177,33 +161,52 @@ export interface Method {
     examples?: ExampleInfo[];
 }
 
-export interface MethodParameter {
+export interface Parameter {
+    name: string;
+    type: string;
+    optional?: boolean;
+    description?: string;
+    defaultValue?: any;
+    parameterProperties?: ParameterPropertyObject;
+}
+
+export interface ParameterPropertyObject {
+    [name: string]: ParameterProperty;
+}
+
+export interface ParameterProperty {
     name: string;
     type: string;
     optional: boolean;
     description?: string;
     defaultValue?: any;
-    parameterProperties?: MethodParameterPropertyObject;
-}
-
-export interface MethodParameterPropertyObject {
-    [name: string]: MethodParameterProperty;
-}
-
-export interface MethodParameterProperty {
-    name: string;
-    type: string;
-    optional: boolean;
-    description?: string;
-    defaultValue?: any;
-    parameterProperties?: MethodParameterPropertyObject;
+    parameterProperties?: ParameterPropertyObject;
 }
 
 export interface Property {
-    //TODO: fill this
+    visibility: Visibility;
+
+    name: string;
+    type: string;
+    description?: string;
+    module?: string;
+    resource?: string;
+
+    export?: string;
+    since?: string;
+    static?: boolean; // all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
 }
 
 export interface Event {
-    //TODO: fill this
-}
+    visibility: Visibility;
 
+    name: string;
+    description?: string;
+    parameters?: Parameter[];
+
+    since?: string;
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
+}
