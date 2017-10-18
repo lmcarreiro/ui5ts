@@ -34,6 +34,11 @@ export interface ExampleInfo {
     text: string;
 }
 
+export interface ReturnValueInfo {
+    type?: string;
+    description?: string;
+}
+
 export interface SymbolBase {
 
 }
@@ -143,21 +148,33 @@ export interface ClassContructor {
 }
 
 export interface EnumProperty {
-    name: string;
     visibility: Visibility;
-    static: boolean;
+
+    name: string;
+    static: boolean; // all true
     type: string;
+    description?: string;
+
+    since?: string;
+    deprecated?: DeprecatedInfo;
 }
 
 export interface Method {
-    name: string;
     visibility: Visibility;
-    returnValue?: { type: string, description: string };
-    parameters?: MethodParameter[];
-    static?: boolean;
+
+    name: string;
     module?: string;
     resource?: string;
-    examples?: any;
+    description?: string;
+    returnValue?: ReturnValueInfo;
+    parameters?: MethodParameter[];
+
+    export?: string;
+    since?: string;
+    static?: boolean; // all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
+    examples?: ExampleInfo[];
 }
 
 export interface MethodParameter {
@@ -165,8 +182,12 @@ export interface MethodParameter {
     type: string;
     optional: boolean;
     description?: string;
-    defaultValue?: string;
-    parameterProperties?: MethodParameterProperty[];
+    defaultValue?: any;
+    parameterProperties?: MethodParameterPropertyObject;
+}
+
+export interface MethodParameterPropertyObject {
+    [name: string]: MethodParameterProperty;
 }
 
 export interface MethodParameterProperty {
@@ -174,8 +195,8 @@ export interface MethodParameterProperty {
     type: string;
     optional: boolean;
     description?: string;
-    defaultValue?: string;
-    parameterProperties?: MethodParameterProperty[];
+    defaultValue?: any;
+    parameterProperties?: MethodParameterPropertyObject;
 }
 
 export interface Property {

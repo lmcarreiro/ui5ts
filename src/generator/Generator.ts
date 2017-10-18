@@ -138,7 +138,13 @@ export default class Generator
             "static",
             "final",
             "abstract",
-            "optional"
+            "optional",
+            "defaultValue",
+            "$keyEqualsName"
+        ];
+
+        let treatAsArray = [
+            "parameterProperties"
         ];
 
         if (Array.isArray(object)) {
@@ -152,6 +158,9 @@ export default class Generator
             }
         }
         else {
+            if (object && object.hasOwnProperty("defaultValue")) {
+                object.defaultValue = typeof(object.defaultValue) + "[" + object.defaultValue + "]";
+            }
             for (let key in object) {
                 if (object.hasOwnProperty(key)) {
                     let value = object[key];
@@ -161,6 +170,14 @@ export default class Generator
                     result[key].$count++;
 
                     if (typeof(value) === "object") {
+                        if (treatAsArray.indexOf(key) > -1) {
+                            let array: any[] = [];
+                            for (var k in value) {
+                                value[k].$keyEqualsName = k === value[k].name;
+                                array.push(value[k]);
+                            }
+                            value = array;
+                        }
                         this.addToResult(result[key], value);
                     }
                     else {
