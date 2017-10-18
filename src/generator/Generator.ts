@@ -12,7 +12,7 @@ export default class Generator
     
     private getFromLocal = true;
     private apiBaseUrl = "https://sapui5.hana.ondemand.com/test-resources";
-    private apiBasePath = "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.6/test-resources";
+    private apiBasePath = "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.10/test-resources";
     private apiUrlSuffix = "designtime/api.json";
     
     private namespaces = [
