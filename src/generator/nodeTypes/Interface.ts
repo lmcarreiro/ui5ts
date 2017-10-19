@@ -1,30 +1,30 @@
 import * as ui5 from "../ui5api";
 import TreeNode from "./base/TreeNode";
+import Method   from "./Method";
 
-export default class Class extends TreeNode {
+export default class Interface extends TreeNode {
 
-    private content: ui5.SymbolInterface;
+    private name: string;
+    private description: string;
+    private methods: Method[];
 
     constructor(apiSymbol: ui5.SymbolInterface, children: TreeNode[], indentationLevel: number) {
-        super(children, indentationLevel);
+        super(indentationLevel);
 
-        this.content = apiSymbol;
+        if (children.length) {
+            throw new Error("Interface cannot have children.");
+        }
+
+        this.name = apiSymbol.basename;
+        this.description = apiSymbol.description || "";
+        this.methods = (apiSymbol.methods || []).map(m => new Method(m, indentationLevel + 1));;
     }
 
     public generateTypeScriptCode(output: string[]): void {
-        //is nested inside a class?
-        if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
-            output.push(`${this.indentation.slice(0, -4)}namespace ${this.parent.content.basename} {\r\n`);
-        }
-
-        output.push(`${this.indentation}export interface ${symbol.basename} {\r\n`);
-        this.children.forEach(c => c.generateTypeScriptCode(output));
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}export interface ${this.name} {\r\n`);
+        this.methods.forEach(m => m.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
-        
-        //is nested inside a class?
-        if (this.parent && this.parent.content.kind === ui5.Kind.Class) {
-            output.push(`${this.indentation.slice(0, -4)}}\r\n`);
-        }
     }
 
 }

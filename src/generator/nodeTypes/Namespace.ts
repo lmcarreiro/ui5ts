@@ -4,29 +4,28 @@ import TreeNode from "./base/TreeNode";
 export default class Namespace extends TreeNode {
 
     private content: ui5.SymbolNamespace;
+    private children: TreeNode[];
 
     constructor(apiSymbol: ui5.SymbolNamespace, children: TreeNode[], indentationLevel: number) {
-        super(children, indentationLevel);
+        super(indentationLevel);
 
         this.content = apiSymbol;
+        this.children = children;
     }
 
     public generateTypeScriptCode(output: string[]): void {
-        var type = this.typeDefinedAsNamespace(symbol.name);
+        var type = this.typeDefinedAsNamespace(this.content.name);
 
-        this.printTsDoc(output, 0, symbol);
         if (!type) {
-            
-            if (this.indentationLevel === 0) {
-                output.push("declare ");
-            }
+            let declare = !this.indentation ? "declare " : "";
 
-            output.push(`${this.indentation}namespace ${symbol.basename} {\r\n`);
+            this.printTsDoc(output, this.content.description);
+            output.push(`${this.indentation}${declare}namespace ${this.content.basename} {\r\n`);
             this.children.forEach(c => c.generateTypeScriptCode(output));
             output.push(`${this.indentation}}\r\n`);
         }
         else {
-            output.push(`${this.indentation}export type ${symbol.basename} = ${type};\r\n`);
+            output.push(`${this.indentation}export type ${this.content.basename} = ${type};\r\n`);
         }
     }
 

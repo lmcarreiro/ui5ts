@@ -2,6 +2,7 @@ import * as request         from 'request';
 import * as fs              from 'fs';
 import * as ui5             from './ui5api';
 import TreeNode             from './nodeTypes/base/TreeNode';
+import TreeBuilder          from './nodeTypes/base/TreeBuilder';
 
 export default class Generator
 {
@@ -97,13 +98,13 @@ export default class Generator
         allSymbols.sort((a, b) => a.name.localeCompare(b.name));
 
         let jQuerySymbols = allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/));
-        let jQueryTree = TreeNode.createFromSymbolsArray(jQuerySymbols);
+        let jQueryTree = TreeBuilder.createFromSymbolsArray(jQuerySymbols);
         let jQueryOutput: string[] = [];
         let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
         this.createFile(this.baseDefinitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
 
         let sapSymbols = allSymbols.filter(s => s.name.match(/^sap([.]|$)/));
-        let sapTree = TreeNode.createFromSymbolsArray(sapSymbols);
+        let sapTree = TreeBuilder.createFromSymbolsArray(sapSymbols);
         let sapOutput: string[] = [];
         let tsSap = sapTree.generateTypeScriptCode(sapOutput);
         this.createFile(this.baseDefinitionsPath + "sap.d.ts", sapOutput.join(""));
