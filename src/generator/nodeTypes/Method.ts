@@ -4,7 +4,6 @@ import TreeNode from "./base/TreeNode";
 
 export default class Method extends TreeNode {
 
-    private content: ui5.Method;
 
     constructor(config: Config, apiSymbol: ui5.Method, indentationLevel: number) {
         super(config, indentationLevel);

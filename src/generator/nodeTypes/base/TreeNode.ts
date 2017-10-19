@@ -27,4 +27,8 @@ export default abstract class TreeNode {
 
         output.push(`${this.indentation} */\r\n`);
     }
+
+    protected replaceVisibility(visibility: ui5.Visibility): ui5.Visibility {
+        return <ui5.Visibility>visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected);
+    }
 }

@@ -4,22 +4,28 @@ import TreeNode from "./base/TreeNode";
 
 export default class Property extends TreeNode {
 
-    private content: ui5.Property;
+    private visibility: ui5.Visibility;
+    private static: boolean;
+    private name: string;
+    private type: string;
+    private description: string;
 
     constructor(config: Config, apiSymbol: ui5.Property, indentationLevel: number) {
         super(config, indentationLevel);
 
-        this.content = apiSymbol;
+        this.visibility = super.replaceVisibility(apiSymbol.visibility);
+        this.static = apiSymbol.static || false;
+        this.name = apiSymbol.name;
+        this.type = apiSymbol.type;
+        this.description = apiSymbol.description || "";
     }
 
     public generateTypeScriptCode(output: string[]): void {
-        let property = this.content;
+        let visibilityModifier = this.visibility + " ";
+        let staticModifier = this.static ? "static " : "";
 
-        let visibilityModifier = property.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
-        let staticModifier = property.static ? "static " : "";
-
-        this.printTsDoc(output, property.description);
-        output.push(`${this.indentation}${visibilityModifier}${staticModifier}${property.name}: ${property.type};\r\n`);
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}${visibilityModifier}${staticModifier}${this.name}: ${this.type};\r\n`);
     }
 
 }

@@ -4,19 +4,19 @@ import TreeNode from "./base/TreeNode";
 
 export default class EnumProperty extends TreeNode {
 
-    private content: ui5.Property;
+    private name: string;
+    private description: string;
 
     constructor(config: Config, apiSymbol: ui5.Property, indentationLevel: number) {
         super(config, indentationLevel);
 
-        this.content = apiSymbol;
+        this.name = apiSymbol.name;
+        this.description = apiSymbol.description || "";
     }
 
     public generateTypeScriptCode(output: string[]): void {
-        let property = this.content;
-
-        this.printTsDoc(output, property.description);
-        output.push(`${this.indentation}${property.name} = "${property.name}",\r\n`);
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}${this.name} = "${this.name}",\r\n`);
     }
 
 }
