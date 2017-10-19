@@ -1,4 +1,5 @@
 import * as ui5 from "../ui5api";
+import Config   from "../GeneratorConfig";
 import TreeNode from "./base/TreeNode";
 import Method   from "./Method";
 
@@ -8,8 +9,8 @@ export default class Interface extends TreeNode {
     private description: string;
     private methods: Method[];
 
-    constructor(apiSymbol: ui5.SymbolInterface, children: TreeNode[], indentationLevel: number) {
-        super(indentationLevel);
+    constructor(config: Config, apiSymbol: ui5.SymbolInterface, children: TreeNode[], indentationLevel: number) {
+        super(config, indentationLevel);
 
         if (children.length) {
             throw new Error("Interface cannot have children.");
@@ -17,7 +18,7 @@ export default class Interface extends TreeNode {
 
         this.name = apiSymbol.basename;
         this.description = apiSymbol.description || "";
-        this.methods = (apiSymbol.methods || []).map(m => new Method(m, indentationLevel + 1));;
+        this.methods = (apiSymbol.methods || []).map(m => new Method(this.config, m, indentationLevel + 1));;
     }
 
     public generateTypeScriptCode(output: string[]): void {

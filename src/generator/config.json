@@ -1,0 +1,55 @@
+{
+    "output": {
+        "exportsPath":      "./exports/",
+        "definitionsPath":  "./types/",
+        "indentation":      "    "
+    },
+    "input": {
+        "runLocal":     true,
+        "remoteUrl":    "https://sapui5.hana.ondemand.com/test-resources",
+        "localPath":    "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.10/test-resources",
+        "jsonLocation": "designtime/api.json",
+        "namespaces": [
+              "sap/m"
+            , "sap/tnt"
+            , "sap/ui/commons"
+            , "sap/ui/core"
+            , "sap/ui/demokit"
+            , "sap/ui/dt"
+            , "sap/ui/layout"
+            , "sap/ui/suite"
+            , "sap/ui/table"
+            , "sap/ui/unified"
+            , "sap/ui/ux3"
+            , "sap/uxap"
+        ]
+    },
+    "replacements": {
+        "global": {
+              "function":                   "Function"
+            , "int":                        "number"
+            , "float":                      "number"
+            , "DOMRef":                     "HTMLElement"
+            , "domRef":                     "HTMLElement"
+            , "DomNode":                    "HTMLElement"
+            , "jQuery":                     "JQuery"
+            , "Map":                        "{ [key: string]: any }"
+            , "ODataAnnotations~Source":    "{ [key: string]: any }"
+            , "sap.m.IconTabBarSelectList": "sap.m.SelectList"
+        },
+        "specific": {
+              "sap.ui.core.ID":                                         "string"
+            , "sap.ui.core.URI":                                        "string"
+            , "sap.ui.core.CSSSize":                                    "string"
+            , "sap.ui.core.CSSColor":                                   "string"
+
+            , "sap.ui.base.ManagedObject.propagateMessages.aMessages":  "string[]"
+            , "sap.m.P13nConditionPanel.setKeyFields.aKeyFields":       "{ key: string, text: string }[]"
+            , "sap.ui.model.analytics.AnalyticalBinding.sort.aSorter":  "sap.ui.model.Sorter|sap.ui.model.Sorter[]"
+
+            , "sap.m.MenuButton.setTooltip":                            "sap.m.MenuButton"
+            , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
+            , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
+        }
+    }
+}

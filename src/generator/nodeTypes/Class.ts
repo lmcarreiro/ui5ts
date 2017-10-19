@@ -1,23 +1,23 @@
 import * as ui5 from "../ui5api";
+import Config   from "../GeneratorConfig";
 import TreeNode from "./base/TreeNode";
 import Method   from "./Method";
 
 export default class Class extends TreeNode {
 
-    private children: TreeNode[];
-
     private name: string;
     private description: string;
     private methods: Method[];
+    private children: TreeNode[];
 
-    constructor(apiSymbol: ui5.SymbolClass, children: TreeNode[], indentationLevel: number) {
-        super(indentationLevel);
+    constructor(config: Config, apiSymbol: ui5.SymbolClass, children: TreeNode[], indentationLevel: number) {
+        super(config, indentationLevel);
 
         this.children = children;
 
         this.name = apiSymbol.basename;
         this.description = apiSymbol.description || "";
-        this.methods = (apiSymbol.methods || []).map(m => new Method(m, indentationLevel + 1));
+        this.methods = (apiSymbol.methods || []).map(m => new Method(this.config, m, indentationLevel + 1));
     }
 
     public generateTypeScriptCode(output: string[]): void {
