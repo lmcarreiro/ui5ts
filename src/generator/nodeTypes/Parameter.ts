@@ -12,7 +12,7 @@ export default class Parameter {
         let parameterTypeReplacement = config.replacements.specific.methodParameterType[`${parentName}.${parameter.name}`];
 
         this.name = parameter.name;
-        this.type = parameterTypeReplacement || parameter.type;
+        this.type = (parameterTypeReplacement || parameter.type).split("|").map(t => config.replacements.global[t] || t).join("|");
         this.optional = parameter.optional || false;
         this.description = parameter.description || "";
     }
@@ -22,7 +22,8 @@ export default class Parameter {
     }
 
     public getTsDoc(): string {
-        return `@param {${this.type}} ${this.name} - ${this.description}`;
+        let description = this.description ? ` - ${this.description}` : "";
+        return `@param {${this.type}} ${this.name}${description}`;
     }
 
 }

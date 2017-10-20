@@ -10,7 +10,7 @@ export default class Method extends TreeNode {
     private name: string;
     private description: string;
     private parameters: Parameter[];
-    private returnValue: ui5.ReturnValueInfo;
+    private returnValue: { type: string, description: string };
 
     constructor(config: Config, method: ui5.Method, parentName: string, indentationLevel: number) {
         super(config, indentationLevel);
@@ -23,8 +23,11 @@ export default class Method extends TreeNode {
         this.name = method.name;
         this.description = method.description || "";
         this.parameters = (method.parameters || []).map(p => new Parameter(this.config, p, methodFullName));
-        this.returnValue = method.returnValue || {};
-        this.returnValue.type = returnTypeReplacement || this.returnValue.type || "void";
+        this.returnValue = {
+            type: returnTypeReplacement || (method.returnValue && method.returnValue.type) || (this.returnValue.description ? "any" : "void"),
+            description: (method.returnValue && method.returnValue.description) || ""
+        };
+        this.returnValue.type = this.returnValue.type.split("|").map(t => this.config.replacements.global[t] || t).join("|");
     }
 
     public generateTypeScriptCode(output: string[]): void {
@@ -40,10 +43,8 @@ export default class Method extends TreeNode {
     protected printTsDoc(output: string[]): void {
         let docInfo = (this.parameters || []).map(p => p.getTsDoc());
 
-        let returnType = this.returnValue.type ? `{${this.returnValue.type}}` : "";
-        let returnDescription = this.returnValue.description ? this.returnValue.description : "";
-        if (returnType !== "void") {
-            docInfo.push(`@returns ${returnType} ${returnDescription}`);
+        if (this.returnValue.type !== "void") {
+            docInfo.push(`@returns {${this.returnValue.type}} ${this.returnValue.description}`);
         }
 
         super.printTsDoc(output, this.description, docInfo);
