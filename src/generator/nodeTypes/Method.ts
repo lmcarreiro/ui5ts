@@ -23,11 +23,12 @@ export default class Method extends TreeNode {
         this.name = method.name;
         this.description = method.description || "";
         this.parameters = (method.parameters || []).map(p => new Parameter(this.config, p, methodFullName));
-        this.returnValue = {
-            type: returnTypeReplacement || (method.returnValue && method.returnValue.type) || (this.returnValue.description ? "any" : "void"),
-            description: (method.returnValue && method.returnValue.description) || ""
-        };
-        this.returnValue.type = this.returnValue.type.split("|").map(t => this.config.replacements.global[t] || t).join("|");
+        
+        let description = (method.returnValue && method.returnValue.description) || "";
+        let type = returnTypeReplacement || (method.returnValue && method.returnValue.type) || (description ? "any" : "void");
+        type = type.split("|").map(t => this.config.replacements.global[t] || t).join("|");
+
+        this.returnValue = { type, description };
     }
 
     public generateTypeScriptCode(output: string[]): void {
