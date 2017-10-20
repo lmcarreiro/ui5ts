@@ -1,5 +1,4 @@
-export interface API
-{
+export interface API {
     library: string;
     symbols: Symbol[];
     version: string;
@@ -20,116 +19,194 @@ export enum Visibility {
     Restricted  = "restricted",
 }
 
-export interface ApiElement
-{
-    name?: string;
-    description?: string;
-    deprecated?: boolean;
+export interface DeprecatedInfo {
     since?: string;
-    experimental?: boolean;
-    parameters?: MethodParameter[];
-    returnValue?: { type: string, description: string };
+    text?: string;
 }
 
-export interface SymbolBase extends ApiElement
-{
-    name: string;
-    basename: string;
-    resource: string;
-    module: string;
-    visibility: Visibility;
-    export?: string;
-    static?: boolean;
+export interface ExperimentalInfo {
+    since?: string;
+    text?: string;
 }
 
-export interface SymbolNamespace extends SymbolBase
-{
+export interface ExampleInfo {
+    caption: string;
+    text: string;
+}
+
+export interface ReturnValueInfo {
+    type?: string;
+    description?: string;
+}
+
+export interface SymbolNamespace {
     kind: Kind.Namespace;
 
-    events?: Event[];
+    visibility: Visibility;
+
+    name: string;
+    basename: string;
+    module: string;
+    resource: string;
+    description?: string;
+
     methods?: Method[];
     properties?: Property[];
+    events?: Event[];
+
     extends?: string;
-    final?: boolean;
+    export?: string;
+    since?: string;
+    static?: boolean;// all true
+    final?: boolean;// all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
 }
 
-export interface SymbolClass extends SymbolBase
-{
+export interface SymbolClass {
     kind: Kind.Class;
 
+    visibility: Visibility;
+
+    name: string;
+    basename: string;
+    module: string;
+    resource: string;
+    description?: string;
+
     events?: Event[];
     methods?: Method[];
     properties?: Property[];
-    constructor: any;
+
+    constructor: ClassContructor;
+    abstract?: boolean;// all true
     extends?: string;
     implements?: string[];
-    abstract?: boolean;
+    export?: string;
+    since?: string;
+    static: boolean;// all true
     final?: boolean;
-    "ui5-metadata"?: any;
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
+
+    ["ui5-metadata"]?: any;
 }
 
-export interface SymbolEnum extends SymbolBase
-{
+export interface SymbolEnum {
     kind: Kind.Enum;
 
-    properties?: EnumProperty[];
+    visibility: Visibility;
+
+    name: string;
+    basename: string;
+    module: string;
+    resource: string;
+    description?: string;
+
+    properties?: Property[];
+
+    export?: string;
+    since?: string;
+    static: boolean;// all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
 }
 
-export interface SymbolInterface extends SymbolBase
-{
+export interface SymbolInterface {
     kind: Kind.Interface;
+
+    visibility: Visibility;
+
+    name: string;
+    basename: string;
+    module: string;
+    resource: string;
+    description?: string;
 
     events?: Event[];
     methods?: Method[];
+    properties?: Property[];
+
+    extends?: string;
+    export?: string;
+    since?: string;
+    static: boolean;// all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
 }
 
-export interface EnumProperty extends ApiElement
-{
-    name: string;
+export interface ClassContructor {
     visibility: Visibility;
-    static: boolean;
-    type: string;
+
+    description?: string;
+    parameters?: Parameter[];
+    examples?: ExampleInfo[];
 }
 
-export interface Method extends ApiElement
-{
-    name: string;
+export interface Method {
     visibility: Visibility;
-    returnValue?: { type: string, description: string };
-    parameters?: MethodParameter[];
-    static?: boolean;
+
+    name: string;
     module?: string;
     resource?: string;
-    examples?: any;
+    description?: string;
+    returnValue?: ReturnValueInfo;
+    parameters?: Parameter[];
+
+    export?: string;
+    since?: string;
+    static?: boolean; // all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
+    examples?: ExampleInfo[];
 }
 
-export interface MethodParameter extends ApiElement
-{
+export interface Parameter {
+    name: string;
+    type: string;
+    optional?: boolean;
+    description?: string;
+    defaultValue?: any;
+    parameterProperties?: ParameterPropertyObject;
+}
+
+export interface ParameterPropertyObject {
+    [name: string]: ParameterProperty;
+}
+
+export interface ParameterProperty {
     name: string;
     type: string;
     optional: boolean;
     description?: string;
-    defaultValue?: string;
-    parameterProperties?: MethodParameterProperty[];
+    defaultValue?: any;
+    parameterProperties?: ParameterPropertyObject;
 }
 
-export interface MethodParameterProperty extends ApiElement
-{
+export interface Property {
+    visibility: Visibility;
+
     name: string;
     type: string;
-    optional: boolean;
     description?: string;
-    defaultValue?: string;
-    parameterProperties?: MethodParameterProperty[];
+    module?: string;
+    resource?: string;
+
+    export?: string;
+    since?: string;
+    static?: boolean; // all true
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
 }
 
-export interface Property extends ApiElement
-{
-    //TODO: fill this
-}
+export interface Event {
+    visibility: Visibility;
 
-export interface Event extends ApiElement
-{
-    //TODO: fill this
-}
+    name: string;
+    description?: string;
+    parameters?: Parameter[];
 
+    since?: string;
+    deprecated?: DeprecatedInfo;
+    experimental?: ExperimentalInfo;
+}
