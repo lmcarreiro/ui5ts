@@ -6,6 +6,7 @@ import Method   from "./Method";
 export default class Interface extends TreeNode {
 
     private name: string;
+    private fullName: string;
     private description: string;
     private methods: Method[];
 
@@ -17,8 +18,9 @@ export default class Interface extends TreeNode {
         }
 
         this.name = apiSymbol.basename;
+        this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
-        this.methods = (apiSymbol.methods || []).map(m => new Method(this.config, m, indentationLevel + 1));;
+        this.methods = (apiSymbol.methods || []).map(m => new Method(this.config, m, this.fullName, indentationLevel + 1));;
     }
 
     public generateTypeScriptCode(output: string[]): void {

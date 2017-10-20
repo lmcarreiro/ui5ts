@@ -19,7 +19,7 @@ export default class Namespace extends TreeNode {
     }
 
     public generateTypeScriptCode(output: string[]): void {
-        var type = this.config.replacements.specific[this.fullName];
+        var type = this.config.replacements.specific.namespaceAsType[this.fullName];
 
         if (!type) {
             let declare = !this.indentation ? "declare " : "";
