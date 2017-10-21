@@ -27,7 +27,7 @@ export default class Method extends TreeNode {
         
         let description = (method.returnValue && method.returnValue.description) || "";
         let type = returnTypeReplacement || (method.returnValue && method.returnValue.type) || (description ? "any" : "void");
-        type = TypeUtil.replaceTypes(type, config);
+        type = TypeUtil.replaceTypes(type, config, methodFullName);
 
         this.returnValue = { type, description };
     }

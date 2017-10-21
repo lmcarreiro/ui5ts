@@ -15,10 +15,11 @@ export default class Parameter {
         //save constructor arguments to reinstantiate if needed
         this.constructorArgs = [].slice.call(arguments);
 
-        let parameterTypeReplacement = config.replacements.specific.methodParameterType[`${parentName}.${parameter.name}`];
+        let parameterFullName = `${parentName}.${parameter.name}`;
+        let parameterTypeReplacement = config.replacements.specific.methodParameterType[parameterFullName];
 
         this.name = parameter.name;
-        this.type = TypeUtil.replaceTypes(parameterTypeReplacement || parameter.type, config);
+        this.type = TypeUtil.replaceTypes(parameterTypeReplacement || parameter.type, config, parameterFullName);
         this.optional = parameter.optional || false;
         this.description = parameter.description || "";
     }

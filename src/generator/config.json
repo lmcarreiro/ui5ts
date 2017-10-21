@@ -36,6 +36,8 @@
             , "Map":                        "{ [key: string]: any }"
             , "ODataAnnotations~Source":    "{ [key: string]: any }"
             , "sap.m.IconTabBarSelectList": "sap.m.SelectList"
+            , "object":                     "any"
+            , "array":                      "any[]"
         },
         "specific": {
             "namespaceAsType": {
