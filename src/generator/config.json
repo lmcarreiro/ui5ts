@@ -38,6 +38,8 @@
             , "sap.m.IconTabBarSelectList": "sap.m.SelectList"
             , "object":                     "any"
             , "array":                      "any[]"
+            , "Array":                      "any[]"
+            , "{type:string,index:int}":    "{type:string,index:number}"
         },
         "specific": {
             "namespaceAsType": {
