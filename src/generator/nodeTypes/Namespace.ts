@@ -6,25 +6,17 @@ import Method   from "./Method";
 
 export default class Namespace extends TreeNode {
 
-    private isJQueryNamespace: boolean;
-
-    public name: string;
-    public fullName: string;
     private description: string;
     private properties: Property[];
     private methods: Method[];
     private children: TreeNode[];
 
     constructor(config: Config, apiSymbol: ui5.SymbolNamespace, children: TreeNode[], indentationLevel: number) {
-        super(config, apiSymbol.name.match(/^jQuery/) ? 0 : indentationLevel);
+        super(config, indentationLevel, apiSymbol);
 
-        this.isJQueryNamespace = !!apiSymbol.name.match(/^jQuery/);
-
-        this.name = apiSymbol.basename;
-        this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
-        this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, (this.isJQueryNamespace ? 0 : indentationLevel) + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
-        this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, (this.isJQueryNamespace ? 0 : indentationLevel) + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
+        this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, indentationLevel + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
+        this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, indentationLevel + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
         this.children = children;
     }
 

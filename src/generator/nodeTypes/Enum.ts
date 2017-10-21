@@ -5,20 +5,16 @@ import EnumProperty from "./EnumProperty";
 
 export default class Enum extends TreeNode {
 
-    public name: string;
-    public fullName: string;
     private description: string;
     private properties: EnumProperty[];
 
     constructor(config: Config, apiSymbol: ui5.SymbolEnum, children: TreeNode[], indentationLevel: number) {
-        super(config, indentationLevel);
+        super(config, indentationLevel, apiSymbol);
 
         if (children.length) {
             throw new Error("Enum cannot have children.");
         }
 
-        this.name = apiSymbol.basename;
-        this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
         this.properties = (apiSymbol.properties || []).map(p => new EnumProperty(this.config, p, this.fullName, indentationLevel + 1));
     }

@@ -6,20 +6,16 @@ import Method   from "./Method";
 
 export default class Class extends TreeNode {
 
-    public name: string;
-    public fullName: string;
     private description: string;
     private properties: Property[];
     private methods: Method[];
     private children: TreeNode[];
 
     constructor(config: Config, apiSymbol: ui5.SymbolClass, children: TreeNode[], indentationLevel: number) {
-        super(config, indentationLevel);
+        super(config, indentationLevel, apiSymbol);
 
         this.children = children;
 
-        this.name = apiSymbol.basename;
-        this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
         this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
         this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));

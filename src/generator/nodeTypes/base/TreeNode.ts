@@ -2,15 +2,37 @@ import * as ui5     from "../../ui5api";
 import Config       from "../../GeneratorConfig";
 
 export default abstract class TreeNode {
+
+    protected isJQueryNamespace: boolean;
+
     protected config: Config;
     protected indentation: string;
 
-    public abstract name: string;
-    public abstract fullName: string;
+    public name: string;
+    public fullName: string;
 
-    protected constructor(config: Config, indentationLevel: number) {
+    protected constructor(config: Config, indentationLevel: number, obj: { basename: string, name: string })
+    protected constructor(config: Config, indentationLevel: number, name: string, parentName: string)
+    protected constructor(config: Config, indentationLevel: number, objOrName: string|{ basename: string, name: string }, parentName?: string) {
         this.config = config;
         this.indentation = new Array(indentationLevel + 1).join(this.config.output.indentation);
+        
+        if (typeof objOrName === "object") {
+            this.name = objOrName.basename;
+            this.fullName = objOrName.name;
+        }
+        else if (parentName) {
+            this.name = objOrName;
+            this.fullName = `${parentName}.${objOrName}`;
+        }
+        else {
+            throw new Error("Wrong arguments.");
+        }
+
+        this.isJQueryNamespace = !!this.fullName.match(/^jQuery/);
+        if (this.isJQueryNamespace) {
+            this.indentation = parentName ? this.config.output.indentation : "";
+        }
     }
 
     public abstract generateTypeScriptCode(output: string[]): void;

@@ -7,20 +7,16 @@ export default class Property extends TreeNode {
 
     private visibility: ui5.Visibility;
     private static: boolean;
-    public name: string;
-    public fullName: string;
     private description: string;
     private type: string;
 
     private parentKind: ui5.Kind;
 
     constructor(config: Config, property: ui5.Property, parentName: string, indentationLevel: number, parentKind: ui5.Kind) {
-        super(config, indentationLevel);
+        super(config, indentationLevel, property.name, parentName);
 
         this.visibility = super.replaceVisibility(property.visibility);
         this.static = property.static || false;
-        this.name = property.name;
-        this.fullName = `${parentName}.${this.name}`;
         this.description = property.description || "";
 
         let typeReplacement = config.replacements.specific.propertyType[this.fullName];

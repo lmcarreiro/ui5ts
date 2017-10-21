@@ -8,8 +8,6 @@ export default class Method extends TreeNode {
 
     private visibility: ui5.Visibility;
     private static: boolean;
-    public name: string;
-    public fullName: string;
     private description: string;
     private parameters: Parameter[];
     private returnValue: { type: string, description: string };
@@ -17,12 +15,10 @@ export default class Method extends TreeNode {
     private parentKind: ui5.Kind;
 
     constructor(config: Config, method: ui5.Method, parentName: string, indentationLevel: number, parentKind: ui5.Kind) {
-        super(config, indentationLevel);
+        super(config, indentationLevel, method.name, parentName);
 
         this.visibility = super.replaceVisibility(method.visibility);
         this.static = method.static || false;
-        this.name = method.name;
-        this.fullName = `${parentName}.${this.name}`;
         this.description = method.description || "";
         this.parameters = (method.parameters || []).map(p => new Parameter(this.config, p, this.fullName));
 
