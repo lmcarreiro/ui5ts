@@ -59,10 +59,10 @@ export default class Method extends TreeNode {
     }
 
     protected printTsDoc(output: string[]): void {
-        let docInfo = (this.parameters || []).map(p => p.getTsDoc());
+        let docInfo = (this.parameters || []).map(p => p.getTsDoc().replace(/\r\n|\r|\n/g, " "));
 
         if (this.returnValue.type !== "void") {
-            docInfo.push(`@returns {${this.returnValue.type}} ${this.returnValue.description}`);
+            docInfo.push(`@returns {${this.returnValue.type}} ${this.returnValue.description}`.replace(/\r\n|\r|\n/g, " "));
         }
 
         super.printTsDoc(output, this.description, docInfo);
