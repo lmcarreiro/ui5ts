@@ -1,5 +1,6 @@
 import * as ui5     from "../ui5api";
 import Config       from "../GeneratorConfig";
+import TypeUtil     from "../util/TypeUtil";
 import TreeNode     from "./base/TreeNode";
 import Parameter    from "./Parameter";
 
@@ -26,7 +27,7 @@ export default class Method extends TreeNode {
         
         let description = (method.returnValue && method.returnValue.description) || "";
         let type = returnTypeReplacement || (method.returnValue && method.returnValue.type) || (description ? "any" : "void");
-        type = type.split("|").map(t => this.config.replacements.global[t] || t).join("|");
+        type = TypeUtil.replaceTypes(type, config);
 
         this.returnValue = { type, description };
     }

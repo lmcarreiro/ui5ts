@@ -1,5 +1,6 @@
 import * as ui5 from "../ui5api";
 import Config   from "../GeneratorConfig";
+import TypeUtil from "../util/TypeUtil";
 
 export default class Parameter {
 
@@ -12,7 +13,7 @@ export default class Parameter {
         let parameterTypeReplacement = config.replacements.specific.methodParameterType[`${parentName}.${parameter.name}`];
 
         this.name = parameter.name;
-        this.type = (parameterTypeReplacement || parameter.type).split("|").map(t => config.replacements.global[t] || t).join("|");
+        this.type = TypeUtil.replaceTypes(parameterTypeReplacement || parameter.type, config);
         this.optional = parameter.optional || false;
         this.description = parameter.description || "";
     }
