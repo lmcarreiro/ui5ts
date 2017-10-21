@@ -1,20 +1,30 @@
 import * as ui5 from "../ui5api";
 import Config   from "../GeneratorConfig";
 import TreeNode from "./base/TreeNode";
+import Property from "./Property";
+import Method   from "./Method";
 
 export default class Namespace extends TreeNode {
 
-    private name: string;
-    private fullName: string;
+    private isJQueryNamespace: boolean;
+
+    public name: string;
+    public fullName: string;
     private description: string;
+    private properties: Property[];
+    private methods: Method[];
     private children: TreeNode[];
 
     constructor(config: Config, apiSymbol: ui5.SymbolNamespace, children: TreeNode[], indentationLevel: number) {
-        super(config, indentationLevel);
+        super(config, apiSymbol.name.match(/^jQuery/) ? 0 : indentationLevel);
+
+        this.isJQueryNamespace = !!apiSymbol.name.match(/^jQuery/);
 
         this.name = apiSymbol.basename;
         this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
+        this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, (this.isJQueryNamespace ? 0 : indentationLevel) + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
+        this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, (this.isJQueryNamespace ? 0 : indentationLevel) + 1, this.isJQueryNamespace ? ui5.Kind.Interface : ui5.Kind.Namespace));
         this.children = children;
     }
 
@@ -22,16 +32,53 @@ export default class Namespace extends TreeNode {
         var type = this.config.replacements.specific.namespaceAsType[this.fullName];
 
         if (!type) {
-            let declare = !this.indentation ? "declare " : "";
-
-            this.printTsDoc(output, this.description);
-            output.push(`${this.indentation}${declare}namespace ${this.name} {\r\n`);
-            this.children.forEach(c => c.generateTypeScriptCode(output));
-            output.push(`${this.indentation}}\r\n`);
+            if (this.isJQueryNamespace) {
+                this.generateTypeScriptCodeJQuery(output);
+            }
+            else {
+                this.generateTypeScriptCodeSap(output);
+            }
         }
         else {
             output.push(`${this.indentation}export type ${this.name} = ${type};\r\n`);
         }
+    }
+
+    private generateTypeScriptCodeSap(output: string[]): void {
+        let declare = !this.indentation ? "declare " : "";
+
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}${declare}namespace ${this.name} {\r\n`);
+
+        this.properties.forEach(p => p.generateTypeScriptCode(output));
+        this.methods.forEach(m => m.generateTypeScriptCode(output));
+        this.children.forEach(c => c.generateTypeScriptCode(output));
+
+        output.push(`${this.indentation}}\r\n`);
+    }
+
+    private generateTypeScriptCodeJQuery(output: string[]): void {
+        var jQueryInterfaceName = this.jQueryInterfaceName(this.fullName);
+
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}declare interface ${jQueryInterfaceName} {\r\n`);
+
+        this.children.forEach(c => output.push(`${this.indentation}${this.config.output.indentation}${c.name}: ${this.jQueryInterfaceName(c.fullName)};\r\n`));
+        this.properties.forEach(p => p.generateTypeScriptCode(output));
+        this.methods.forEach(m => m.generateTypeScriptCode(output));
+
+        output.push(`${this.indentation}}\r\n`);
+
+        this.children.forEach(c => c.generateTypeScriptCode(output));
+    }
+
+    private jQueryInterfaceName(name: string): string {
+        return name === "jQuery"
+            ? "JQueryStatic"
+            : name
+                .split(".")
+                .map(p => p[0].toUpperCase() + p.slice(1))
+                .join("");
     }
 
 }

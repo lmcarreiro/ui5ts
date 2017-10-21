@@ -17,6 +17,7 @@ export default interface GeneratorConfig {
             namespaceAsType:        { [namespace:   string]: string },
             methodParameterType:    { [parameter:   string]: string };
             methodReturnType:       { [method:      string]: string };
+            propertyType:           { [property:    string]: string };
         }
     }
 }

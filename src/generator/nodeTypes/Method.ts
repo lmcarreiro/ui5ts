@@ -8,28 +8,33 @@ export default class Method extends TreeNode {
 
     private visibility: ui5.Visibility;
     private static: boolean;
-    private name: string;
+    public name: string;
+    public fullName: string;
     private description: string;
     private parameters: Parameter[];
     private returnValue: { type: string, description: string };
 
-    constructor(config: Config, method: ui5.Method, parentName: string, indentationLevel: number) {
-        super(config, indentationLevel);
+    private parentKind: ui5.Kind;
 
-        let methodFullName = `${parentName}.${method.name}`;
-        let returnTypeReplacement = config.replacements.specific.methodReturnType[methodFullName];
+    constructor(config: Config, method: ui5.Method, parentName: string, indentationLevel: number, parentKind: ui5.Kind) {
+        super(config, indentationLevel);
 
         this.visibility = super.replaceVisibility(method.visibility);
         this.static = method.static || false;
         this.name = method.name;
+        this.fullName = `${parentName}.${this.name}`;
         this.description = method.description || "";
-        this.parameters = (method.parameters || []).map(p => new Parameter(this.config, p, methodFullName));
+        this.parameters = (method.parameters || []).map(p => new Parameter(this.config, p, this.fullName));
+
+        let returnTypeReplacement = config.replacements.specific.methodReturnType[this.fullName];
         
         let description = (method.returnValue && method.returnValue.description) || "";
         let type = returnTypeReplacement || (method.returnValue && method.returnValue.type) || (description ? "any" : "void");
-        type = TypeUtil.replaceTypes(type, config, methodFullName);
+        type = TypeUtil.replaceTypes(type, config, this.fullName);
 
         this.returnValue = { type, description };
+
+        this.parentKind = parentKind;
     }
 
     public generateTypeScriptCode(output: string[]): void {
@@ -51,11 +56,26 @@ export default class Method extends TreeNode {
             }
         }
 
-        let visibilityModifier = this.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
-        let staticModifier = this.static ? "static " : "";
+        let declaration: string;
+
+        switch (this.parentKind) {
+            case ui5.Kind.Namespace:
+                declaration = "function ";
+                break;
+            case ui5.Kind.Interface:
+                declaration = "";
+                break;
+            case ui5.Kind.Class:
+                let visibilityModifier = this.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
+                let staticModifier = this.static ? "static " : "";
+                declaration = visibilityModifier + staticModifier;
+                break;
+            default:
+                throw new Error(`UI5 kind '${this.parentKind}' cannot have methods.`);
+        }
 
         let parametersCode = parameters.map(p => p.getTypeScriptCode());
-        output.push(`${this.indentation}${visibilityModifier}${staticModifier}${this.name}(${parametersCode.join(", ")}): ${this.returnValue.type};\r\n`);
+        output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")}): ${this.returnValue.type};\r\n`);
     }
 
     protected printTsDoc(output: string[]): void {

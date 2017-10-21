@@ -58,6 +58,10 @@
                 , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
                 , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
             }
+
+            , "propertyType": {
+                
+            }
         }
     }
 }

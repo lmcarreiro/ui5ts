@@ -5,7 +5,8 @@ import EnumProperty from "./EnumProperty";
 
 export default class Enum extends TreeNode {
 
-    private name: string;
+    public name: string;
+    public fullName: string;
     private description: string;
     private properties: EnumProperty[];
 
@@ -17,8 +18,9 @@ export default class Enum extends TreeNode {
         }
 
         this.name = apiSymbol.basename;
+        this.fullName = apiSymbol.name;
         this.description = apiSymbol.description || "";
-        this.properties = (apiSymbol.properties || []).map(p => new EnumProperty(this.config, p, indentationLevel + 1));
+        this.properties = (apiSymbol.properties || []).map(p => new EnumProperty(this.config, p, this.fullName, indentationLevel + 1));
     }
 
     public generateTypeScriptCode(output: string[]): void {

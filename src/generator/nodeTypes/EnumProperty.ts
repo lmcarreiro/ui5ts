@@ -4,13 +4,15 @@ import TreeNode from "./base/TreeNode";
 
 export default class EnumProperty extends TreeNode {
 
-    private name: string;
+    public name: string;
+    public fullName: string;
     private description: string;
 
-    constructor(config: Config, apiSymbol: ui5.Property, indentationLevel: number) {
+    constructor(config: Config, apiSymbol: ui5.Property, parentName: string, indentationLevel: number) {
         super(config, indentationLevel);
 
         this.name = apiSymbol.name;
+        this.fullName = `${parentName}.${this.name}`;
         this.description = apiSymbol.description || "";
     }
 

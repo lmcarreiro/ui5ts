@@ -5,6 +5,9 @@ export default abstract class TreeNode {
     protected config: Config;
     protected indentation: string;
 
+    public abstract name: string;
+    public abstract fullName: string;
+
     protected constructor(config: Config, indentationLevel: number) {
         this.config = config;
         this.indentation = new Array(indentationLevel + 1).join(this.config.output.indentation);
