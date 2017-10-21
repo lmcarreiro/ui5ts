@@ -33,13 +33,29 @@ export default class Method extends TreeNode {
     }
 
     public generateTypeScriptCode(output: string[]): void {
+        this.printTsDoc(output);
+        this.printMethodOverloads(output, this.parameters || []);
+    }
+
+    private printMethodOverloads(output: string[], parameters: Parameter[]): void {
+        let firstOptional: number|undefined;
+        for (let i = 0; i < parameters.length; i++) {
+            if (!firstOptional && parameters[i].isOptional()) {
+                firstOptional = i;
+            }
+            else if (firstOptional !== undefined && !parameters[i].isOptional()) {
+                // optional parameter followed by required parameter
+                this.printMethodOverloads(output, parameters.filter((p, k) => k !== firstOptional));
+                this.printMethodOverloads(output, parameters.map((p, k) => k !== firstOptional ? p : p.asRequired()));
+                return;
+            }
+        }
+
         let visibilityModifier = this.visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected) + " ";
         let staticModifier = this.static ? "static " : "";
 
-        this.printTsDoc(output);
-
-        let parameters = (this.parameters || []).map(p => p.getTypeScriptCode());
-        output.push(`${this.indentation}${visibilityModifier}${staticModifier}${this.name}(${parameters.join(", ")}): ${this.returnValue.type};\r\n`);
+        let parametersCode = parameters.map(p => p.getTypeScriptCode());
+        output.push(`${this.indentation}${visibilityModifier}${staticModifier}${this.name}(${parametersCode.join(", ")}): ${this.returnValue.type};\r\n`);
     }
 
     protected printTsDoc(output: string[]): void {
