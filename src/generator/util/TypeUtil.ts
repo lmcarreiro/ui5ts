@@ -15,9 +15,22 @@ export default {
 
             t = replacement || t;
 
+            if (t.match(/^jQuery[.]/)) {
+                t = this.getJQueryFullName(t);
+            }
+
             types[k] = t + (isArray ? "[]" : "");
         }
 
         return types.join("|");
+    },
+
+    getJQueryFullName(fullName: string): string {
+        return fullName === "jQuery"
+            ? "JQueryStatic"
+            : fullName
+                .split(".")
+                .map(p => p[0].toUpperCase() + p.slice(1))
+                .join("");
     }
 };

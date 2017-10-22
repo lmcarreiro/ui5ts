@@ -1,5 +1,6 @@
 import * as ui5     from "../../ui5api";
 import Config       from "../../GeneratorConfig";
+import TypeUtil     from "../../util/TypeUtil";
 
 export default abstract class TreeNode {
 
@@ -63,11 +64,6 @@ export default abstract class TreeNode {
 
     //TODO:check if it could be protected
     public getJQueryFullName(): string {
-        return this.fullName === "jQuery"
-            ? "JQueryStatic"
-            : this.fullName
-                .split(".")
-                .map(p => p[0].toUpperCase() + p.slice(1))
-                .join("");
+        return TypeUtil.getJQueryFullName(this.fullName);
     }
 }
