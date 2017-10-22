@@ -45,10 +45,10 @@ export default class Class extends TreeNode {
     }
     
     private generateTypeScriptCodeJQuery(output: string[]): void {
-        var jQueryInterfaceName = this.jQueryInterfaceName(this.fullName);
+        var jQueryFullName = this.getJQueryFullName();
 
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}export class ${jQueryInterfaceName} {\r\n`);
+        output.push(`${this.indentation}export class ${jQueryFullName} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
         //TODO: support class children (there is only one case, it's an enum. Could be converted in a static object literal)

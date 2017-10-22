@@ -50,12 +50,12 @@ export default class Namespace extends TreeNode {
     }
 
     private generateTypeScriptCodeJQuery(output: string[]): void {
-        var jQueryInterfaceName = this.jQueryInterfaceName(this.fullName);
+        var jQueryInterfaceName = this.getJQueryFullName();
 
         this.printTsDoc(output, this.description);
         output.push(`${this.indentation}declare interface ${jQueryInterfaceName} {\r\n`);
 
-        this.children.forEach(c => output.push(`${this.indentation}${this.config.output.indentation}${c.name}: ${this.jQueryInterfaceName(c.fullName)};\r\n`));
+        this.children.forEach(c => output.push(`${this.indentation}${this.config.output.indentation}${c.name}: ${c.getJQueryFullName()};\r\n`));
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
 

@@ -8,6 +8,7 @@ export default abstract class TreeNode {
     protected config: Config;
     protected indentation: string;
 
+    //TODO:check if it could be protected
     public name: string;
     public fullName: string;
 
@@ -60,10 +61,11 @@ export default abstract class TreeNode {
         return <ui5.Visibility>visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected);
     }
 
-    protected jQueryInterfaceName(name: string): string {
-        return name === "jQuery"
+    //TODO:check if it could be protected
+    public getJQueryFullName(): string {
+        return this.fullName === "jQuery"
             ? "JQueryStatic"
-            : name
+            : this.fullName
                 .split(".")
                 .map(p => p[0].toUpperCase() + p.slice(1))
                 .join("");
