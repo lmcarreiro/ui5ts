@@ -41,6 +41,8 @@
             , "sap.m.IconTabBarSelectList":                         "sap.m.SelectList"
             , "sap.ui.commons.form.SimpleFormLayout":               "sap.ui.layout.form.SimpleFormLayout"
             , "sap.ui.commons.TitleLevel":                          "sap.ui.core.TitleLevel"
+            , "{undefined}":                                        "undefined"
+            , "undefined":                                          "any"
             , "object":                                             "any"
             , "array":                                              "any[]"
             , "Array":                                              "any[]"
@@ -75,6 +77,7 @@
                 , "sap.m.TimePicker.setSecondsStep":                        "sap.m.TimePicker"
                 , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
                 , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
+                , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
             }
 
             , "propertyType": {
