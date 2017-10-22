@@ -48,7 +48,7 @@ export default class Class extends TreeNode {
         var jQueryFullName = this.getJQueryFullName();
 
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}export class ${jQueryFullName} {\r\n`);
+        output.push(`${this.indentation}declare class ${jQueryFullName} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
         //TODO: support class children (there is only one case, it's an enum. Could be converted in a static object literal)

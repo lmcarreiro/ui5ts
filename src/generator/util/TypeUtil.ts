@@ -9,7 +9,9 @@ export default {
             let t = types[k].replace(/\[\]$/, "");
 
             var replacement = config.replacements.global[t];
-            if (replacement && ["any", "any[]"].indexOf(replacement) > -1) {
+
+            // warnings when using any
+            if (replacement && ["any", "any[]", "Promise<any>"].indexOf(replacement) > -1) {
                 console.log(`Replacing '${t}'${t !== type ? ` (in '${type}')` : ""} with '${replacement}' in '${name}'.`);
             }
 

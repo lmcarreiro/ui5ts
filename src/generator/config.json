@@ -36,10 +36,11 @@
             , "Map":                        "{ [key: string]: any }"
             , "ODataAnnotations~Source":    "{ [key: string]: any }"
             , "sap.m.IconTabBarSelectList": "sap.m.SelectList"
+            , "{type:string,index:int}":    "{type:string,index:number}"
             , "object":                     "any"
             , "array":                      "any[]"
             , "Array":                      "any[]"
-            , "{type:string,index:int}":    "{type:string,index:number}"
+            , "Promise":                    "Promise<any>"
         },
         "specific": {
             "namespaceAsType": {

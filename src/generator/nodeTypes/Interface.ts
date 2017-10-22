@@ -23,8 +23,11 @@ export default class Interface extends TreeNode {
     }
 
     public generateTypeScriptCode(output: string[]): void {
+        let declareOrExport = this.isJQueryNamespace ? "declare " : "export ";
+        let name = this.isJQueryNamespace ? this.getJQueryFullName() : this.name;
+
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}export interface ${this.isJQueryNamespace ? this.getJQueryFullName() : this.name} {\r\n`);
+        output.push(`${this.indentation}${declareOrExport}interface ${name} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);

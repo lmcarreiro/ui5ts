@@ -20,8 +20,11 @@ export default class Enum extends TreeNode {
     }
 
     public generateTypeScriptCode(output: string[]): void {
+        let declareOrExport = this.isJQueryNamespace ? "declare " : "export "
+        let name = this.isJQueryNamespace ? this.getJQueryFullName() : this.name;
+
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}export enum ${this.isJQueryNamespace ? this.getJQueryFullName() : this.name} {\r\n`);
+        output.push(`${this.indentation}${declareOrExport}enum ${name} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
     }
