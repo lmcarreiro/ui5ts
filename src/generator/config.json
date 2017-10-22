@@ -51,6 +51,7 @@
         "specific": {
             "namespaceAsType": {
                   "sap.ui.commons.SplitterSize":                            "string"
+                , "sap.ui.core.BusyIndicator":                              "class"
                 , "sap.ui.core.CSSSize":                                    "string"
                 , "sap.ui.core.CSSColor":                                   "string"
                 , "sap.ui.core.Dock":                                       "enum"

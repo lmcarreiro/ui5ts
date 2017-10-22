@@ -15,7 +15,7 @@ export default interface GeneratorConfig {
         global:     { [type: string]: string },
         warnings:    string[],
         specific:   {
-            namespaceAsType:        { [namespace:   string]: "string"|"enum" },
+            namespaceAsType:        { [namespace:   string]: "string"|"enum"|"class" },
             methodParameterType:    { [parameter:   string]: string };
             methodReturnType:       { [method:      string]: string };
             propertyType:           { [property:    string]: string };
