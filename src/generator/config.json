@@ -28,6 +28,7 @@
         "global": {
               "function":                                           "Function"
             , "int":                                                "number"
+            , "integer":                                            "number"
             , "float":                                              "number"
             , "DOMRef":                                             "HTMLElement"
             , "domRef":                                             "HTMLElement"
@@ -41,15 +42,20 @@
             , "sap.m.IconTabBarSelectList":                         "sap.m.SelectList"
             , "sap.ui.commons.form.SimpleFormLayout":               "sap.ui.layout.form.SimpleFormLayout"
             , "sap.ui.commons.TitleLevel":                          "sap.ui.core.TitleLevel"
+            , "array.<array.<string>>":                             "string[][]"
             , "{undefined}":                                        "undefined"
             , "undefined":                                          "any"
             , "object":                                             "any"
+            , "*":                                                  "any"
             , "array":                                              "any[]"
             , "Array":                                              "any[]"
             , "Promise":                                            "Promise<any>"
             , "jQuery.Promise":                                     "JQueryPromise<any>"
+            , "jQuery.promise":                                     "JQueryPromise<any>"
+            , "Generator":                                          "IterableIterator<any>"
+            , "sap.ui.core.support.Support":                        "any"
         },
-        "warnings": ["Function", "any", "any[]", "Promise<any>", "JQueryPromise<any>"],
+        "warnings": ["Function", "any", "any[]", "Promise<any>", "JQueryPromise<any>", "IterableIterator<any>"],
         "specific": {
             "namespaceAsType": {
                   "sap.ui.commons.SplitterSize":                            "string"
@@ -59,6 +65,7 @@
                 , "sap.ui.core.Dock":                                       "enum"
                 , "sap.ui.core.ID":                                         "string"
                 , "sap.ui.core.Percentage":                                 "string"
+                , "sap.ui.core.Popup.Dock":                                 "enum"
                 , "sap.ui.core.URI":                                        "string"
             }
 
