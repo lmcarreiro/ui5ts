@@ -13,6 +13,7 @@ export default interface GeneratorConfig {
     },
     replacements: {
         global:     { [type: string]: string },
+        warnings:    string[],
         specific:   {
             namespaceAsType:        { [namespace:   string]: string },
             methodParameterType:    { [parameter:   string]: string };

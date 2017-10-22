@@ -10,15 +10,20 @@ export default {
 
             var replacement = config.replacements.global[t];
 
-            // warnings when using any
-            if (replacement && ["any", "any[]", "Promise<any>"].indexOf(replacement) > -1) {
+            // warnings when using types that could be more specific
+            if (replacement && config.replacements.warnings.indexOf(replacement) > -1) {
                 console.log(`Replacing '${t}'${t !== type ? ` (in '${type}')` : ""} with '${replacement}' in '${name}'.`);
             }
 
             t = replacement || t;
 
             if (t.match(/^jQuery[.]/)) {
-                t = this.getJQueryFullName(t);
+                if (name.match(/^jQuery[.]/)) {
+                    t = this.getJQueryFullName(t);
+                }
+                else {
+                    t = `typeof ${t}`;
+                }
             }
 
             types[k] = t + (isArray ? "[]" : "");
