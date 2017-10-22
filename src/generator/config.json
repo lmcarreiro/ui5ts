@@ -54,6 +54,7 @@
             , "jQuery.promise":                                     "JQueryPromise<any>"
             , "Generator":                                          "IterableIterator<any>"
             , "sap.ui.core.support.Support":                        "any"
+            , "sap.ui.test.qunit":                                  "any"
         },
         "warnings": ["Function", "any", "any[]", "Promise<any>", "JQueryPromise<any>", "IterableIterator<any>"],
         "specific": {
