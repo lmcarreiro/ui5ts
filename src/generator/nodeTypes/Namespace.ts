@@ -1,4 +1,5 @@
 import * as ui5 from "../ui5api";
+import * as fs  from 'fs';
 import Config   from "../GeneratorConfig";
 import TreeNode from "./base/TreeNode";
 import Property from "./Property";
@@ -23,6 +24,8 @@ export default class Namespace extends TreeNode {
     public generateTypeScriptCode(output: string[]): void {
         var type = this.config.replacements.specific.namespaceAsType[this.fullName];
 
+        this.printTsDoc(output, this.description);
+
         if (!type) {
             if (this.isJQueryNamespace) {
                 this.generateTypeScriptCodeJQuery(output);
@@ -32,14 +35,28 @@ export default class Namespace extends TreeNode {
             }
         }
         else {
-            output.push(`${this.indentation}export type ${this.name} = ${type};\r\n`);
+            this.generateNamespaceAsType(output, type);
+        }
+    }
+
+    private generateNamespaceAsType(output: string[], type: "string"|"enum") {
+        switch (type) {
+            case "string":
+                output.push(`${this.indentation}export type ${this.name} = ${type};\r\n`);
+                break;
+            case "enum":
+                let content = fs.readFileSync(`./src/generator/replacements/${this.fullName}.ts`, { encoding: "utf-8" });
+                content = content.split(/\r\n|\r|\n/g).map(line => `${this.indentation}${line}`).join("\r\n");
+                output.push(content);
+                break;
+            default:
+                throw new Error(`Unknown generateNamespaceAsType option: '${type}'.`);
         }
     }
 
     private generateTypeScriptCodeSap(output: string[]): void {
         let declare = !this.indentation ? "declare " : "";
 
-        this.printTsDoc(output, this.description);
         output.push(`${this.indentation}${declare}namespace ${this.name} {\r\n`);
 
         this.properties.forEach(p => p.generateTypeScriptCode(output));
@@ -52,7 +69,6 @@ export default class Namespace extends TreeNode {
     private generateTypeScriptCodeJQuery(output: string[]): void {
         var jQueryInterfaceName = this.getJQueryFullName();
 
-        this.printTsDoc(output, this.description);
         output.push(`${this.indentation}declare interface ${jQueryInterfaceName} {\r\n`);
 
         this.children.forEach(c => output.push(`${this.indentation}${this.config.output.indentation}${c.name}: ${c.getJQueryFullName()};\r\n`));

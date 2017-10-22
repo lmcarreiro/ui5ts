@@ -52,6 +52,7 @@
                 , "sap.ui.core.URI":                                        "string"
                 , "sap.ui.core.CSSSize":                                    "string"
                 , "sap.ui.core.CSSColor":                                   "string"
+                , "sap.ui.core.Dock":                                       "enum"
             }
 
             , "methodParameterType": {
