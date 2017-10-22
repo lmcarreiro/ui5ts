@@ -64,13 +64,4 @@ export default class Namespace extends TreeNode {
         this.children.forEach(c => c.generateTypeScriptCode(output));
     }
 
-    private jQueryInterfaceName(name: string): string {
-        return name === "jQuery"
-            ? "JQueryStatic"
-            : name
-                .split(".")
-                .map(p => p[0].toUpperCase() + p.slice(1))
-                .join("");
-    }
-
 }

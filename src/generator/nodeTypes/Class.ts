@@ -22,6 +22,15 @@ export default class Class extends TreeNode {
     }
 
     public generateTypeScriptCode(output: string[]): void {
+        if (this.isJQueryNamespace) {
+            this.generateTypeScriptCodeJQuery(output);
+        }
+        else {
+            this.generateTypeScriptCodeSap(output);
+        }
+    }
+
+    private generateTypeScriptCodeSap(output: string[]): void {
         this.printTsDoc(output, this.description);
         output.push(`${this.indentation}export class ${this.name} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
@@ -33,6 +42,18 @@ export default class Class extends TreeNode {
             this.children.forEach(c => c.generateTypeScriptCode(output));
             output.push(`${this.indentation}}\r\n`);
         }
+    }
+    
+    private generateTypeScriptCodeJQuery(output: string[]): void {
+        var jQueryInterfaceName = this.jQueryInterfaceName(this.fullName);
+
+        this.printTsDoc(output, this.description);
+        output.push(`${this.indentation}export class ${jQueryInterfaceName} {\r\n`);
+        this.properties.forEach(p => p.generateTypeScriptCode(output));
+        this.methods.forEach(m => m.generateTypeScriptCode(output));
+        //TODO: support class children (there is only one case, it's an enum. Could be converted in a static object literal)
+        //this.children.forEach(c => c.generateTypeScriptCode(output));
+        output.push(`${this.indentation}}\r\n`);
     }
 
 }

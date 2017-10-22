@@ -29,6 +29,9 @@ export default abstract class TreeNode {
             throw new Error("Wrong arguments.");
         }
 
+        // fix some names that has a dot in the middle
+        this.name = this.name.replace(/^.*[.]/, "");
+
         this.isJQueryNamespace = !!this.fullName.match(/^jQuery/);
         if (this.isJQueryNamespace) {
             this.indentation = parentName ? this.config.output.indentation : "";
@@ -55,5 +58,14 @@ export default abstract class TreeNode {
 
     protected replaceVisibility(visibility: ui5.Visibility): ui5.Visibility {
         return <ui5.Visibility>visibility.replace(ui5.Visibility.Restricted, ui5.Visibility.Protected);
+    }
+
+    protected jQueryInterfaceName(name: string): string {
+        return name === "jQuery"
+            ? "JQueryStatic"
+            : name
+                .split(".")
+                .map(p => p[0].toUpperCase() + p.slice(1))
+                .join("");
     }
 }
