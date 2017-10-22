@@ -7,6 +7,7 @@ import Method   from "./Method";
 export default class Class extends TreeNode {
 
     private description: string;
+    private baseClass: string;
     private properties: Property[];
     private methods: Method[];
     private children: TreeNode[];
@@ -17,6 +18,7 @@ export default class Class extends TreeNode {
         this.children = children;
 
         this.description = apiSymbol.description || "";
+        this.baseClass = apiSymbol.extends || "";
         this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
         this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
     }
@@ -31,8 +33,10 @@ export default class Class extends TreeNode {
     }
 
     private generateTypeScriptCodeSap(output: string[]): void {
+        let extend = this.baseClass ? ` extends ${this.baseClass}` : "";
+
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}export class ${this.name} {\r\n`);
+        output.push(`${this.indentation}export class ${this.name}${extend} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
         output.push(`${this.indentation}}\r\n`);
@@ -46,9 +50,10 @@ export default class Class extends TreeNode {
     
     private generateTypeScriptCodeJQuery(output: string[]): void {
         var jQueryFullName = this.getJQueryFullName();
+        let extend = this.baseClass ? ` extends ${this.baseClass}` : "";
 
         this.printTsDoc(output, this.description);
-        output.push(`${this.indentation}declare class ${jQueryFullName} {\r\n`);
+        output.push(`${this.indentation}declare class ${jQueryFullName}${extend} {\r\n`);
         this.properties.forEach(p => p.generateTypeScriptCode(output));
         this.methods.forEach(m => m.generateTypeScriptCode(output));
         //TODO: support class children (there is only one case, it's an enum. Could be converted in a static object literal)
