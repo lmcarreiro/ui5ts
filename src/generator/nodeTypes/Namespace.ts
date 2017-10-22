@@ -42,26 +42,24 @@ export default class Namespace extends TreeNode {
         }
     }
 
-    private generateNamespaceAsType(output: string[], type: "string"|"enum"|"class") {
+    private generateNamespaceAsType(output: string[], type: string) {
         switch (type) {
-            case "string":
-                this.printTsDoc(output, this.description);
-                output.push(`${this.indentation}export type ${this.name} = ${type};\r\n`);
-                break;
-            case "enum":
+            case "{enum}":
                 this.printTsDoc(output, this.description);
                 let content = fs.readFileSync(`./src/generator/replacements/${this.fullName}.ts`, { encoding: "utf-8" });
                 content = content.split(/\r\n|\r|\n/g).map(line => `${this.indentation}${line}`).join("\r\n");
                 output.push(content);
                 break;
-            case "class":
+            case "{class}":
                 let classSymbol: any = this.apiSymbol;
                 classSymbol.kind = ui5.Kind.Class;
                 var classInstance = new Class(this.config, classSymbol, this.children, this.indentation.length / this.config.output.indentation.length);
                 classInstance.generateTypeScriptCode(output);
                 break;
             default:
-                throw new Error(`Unknown generateNamespaceAsType option: '${type}'.`);
+                this.printTsDoc(output, this.description);
+                output.push(`${this.indentation}export type ${this.name} = ${type};\r\n`);
+                break;
         }
     }
 

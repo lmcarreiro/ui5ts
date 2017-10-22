@@ -59,15 +59,19 @@
         "specific": {
             "namespaceAsType": {
                   "sap.ui.commons.SplitterSize":                            "string"
-                , "sap.ui.core.BusyIndicator":                              "class"
-                , "sap.ui.core.Collision":                                  "enum"
+                , "sap.ui.core.BusyIndicator":                              "{class}"
+                , "sap.ui.core.Collision":                                  "{enum}"
                 , "sap.ui.core.CSSSize":                                    "string"
                 , "sap.ui.core.CSSColor":                                   "string"
-                , "sap.ui.core.Dock":                                       "enum"
+                , "sap.ui.core.Dock":                                       "{enum}"
                 , "sap.ui.core.ID":                                         "string"
                 , "sap.ui.core.Percentage":                                 "string"
-                , "sap.ui.core.Popup.Dock":                                 "enum"
+                , "sap.ui.core.Popup.Dock":                                 "{enum}"
                 , "sap.ui.core.URI":                                        "string"
+                , "sap.ui.layout.form.GridElementCells":                    "string"
+                , "sap.ui.layout.GridIndent":                               "string"
+                , "sap.ui.layout.GridSpan":                                 "string"
+                , "sap.uxap.BlockBaseColumnLayout":                         "\"auto\"|1|2|3|4"
             }
 
             , "methodParameterType": {
