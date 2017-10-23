@@ -21,6 +21,12 @@ export default class Class extends TreeNode {
         this.baseClass = apiSymbol.extends || "";
         this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
         this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
+
+        if (typeof(apiSymbol.constructor) === "object") {
+            let constructorSymbol = Object.assign(apiSymbol.constructor, { name: "constructor" });
+            let constructor = new Method(this.config, constructorSymbol, this.fullName, indentationLevel + 1, ui5.Kind.Class)
+            this.methods = [constructor].concat(this.methods);
+        }
     }
 
     public generateTypeScriptCode(output: string[]): void {

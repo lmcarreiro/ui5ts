@@ -71,7 +71,8 @@ export default class Method extends TreeNode {
         }
 
         let parametersCode = parameters.map(p => p.getTypeScriptCode());
-        output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")}): ${this.returnValue.type};\r\n`);
+        let returnType = this.name !== "constructor" ? `: ${this.returnValue.type}` : "";
+        output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")})${returnType};\r\n`);
     }
 
     protected printTsDoc(output: string[]): void {
