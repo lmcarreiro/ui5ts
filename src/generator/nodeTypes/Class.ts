@@ -99,6 +99,7 @@ export default class Class extends TreeNode {
 
     private static fixMethodsOverridesFor(baseClass: Class, subClass: Class): void {
         subClass.methods.forEach(method => {
+            //TODO:if method doesn't exist on base class, need to check the base class of base class, until there is no base class.
             let methodOverrided = baseClass.methods.find(m => m.name === method.name);
             if (methodOverrided) {
                 let returnTypeMethod = method.returnValue.type;
