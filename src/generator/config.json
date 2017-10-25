@@ -90,6 +90,7 @@
                 , "sap.m.TimePicker.setSecondsStep":                        "sap.m.TimePicker"
                 , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
                 , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
+                , "sap.ui.base.Object.getMetadata":                         "sap.ui.base.Metadata"
                 , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
             }
 
