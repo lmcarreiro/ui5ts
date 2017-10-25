@@ -10,7 +10,7 @@ export default class Method extends TreeNode {
     private static: boolean;
     private description: string;
     private parameters: Parameter[];
-    private returnValue: { type: string, description: string };
+    public returnValue: { type: string, description: string };
 
     private parentKind: ui5.Kind;
 

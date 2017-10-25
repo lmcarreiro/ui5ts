@@ -82,17 +82,12 @@ export default class Generator
 
         allSymbols.sort((a, b) => a.name.localeCompare(b.name));
 
-        let jQuerySymbols = allSymbols.filter(s => s.name.match(/^jQuery([.]|$)/));
-        let jQueryTree = TreeBuilder.createFromSymbolsArray(this.config, jQuerySymbols);
-        let jQueryOutput: string[] = [];
-        let tsJQuery = jQueryTree.generateTypeScriptCode(jQueryOutput);
-        this.createFile(this.config.output.definitionsPath + "jQuery.d.ts", jQueryOutput.join(""));
-
-        let sapSymbols = allSymbols.filter(s => s.name.match(/^sap([.]|$)/));
-        let sapTree = TreeBuilder.createFromSymbolsArray(this.config, sapSymbols);
-        let sapOutput: string[] = [];
-        let tsSap = sapTree.generateTypeScriptCode(sapOutput);
-        this.createFile(this.config.output.definitionsPath + "sap.d.ts", sapOutput.join(""));
+        let rootNodes = TreeBuilder.createFromSymbolsArray(this.config, allSymbols);
+        for (var node of rootNodes) {
+            let output: string[] = [];
+            let tsCode = node.generateTypeScriptCode(output);
+            this.createFile(`${this.config.output.definitionsPath}${node.fullName}.d.ts`, output.join(""));
+        }
 
         // Uncomment this to see the details, statistics and example values of the different types of API members
         // this.printApiData(allSymbols);
