@@ -27,9 +27,12 @@
     "replacements": {
         "global": {
               "function":                                           "Function"
+            , "String":                                             "string"
             , "int":                                                "number"
             , "integer":                                            "number"
             , "float":                                              "number"
+            , "Number":                                             "number"
+            , "Boolean":                                            "boolean"
             , "DOMRef":                                             "HTMLElement"
             , "domRef":                                             "HTMLElement"
             , "DomRef":                                             "HTMLElement"
