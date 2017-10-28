@@ -15,10 +15,11 @@ export default interface GeneratorConfig {
         global:     { [type: string]: string },
         warnings:    string[],
         specific:   {
-            namespaceAsType:        { [namespace:   string]: string },
-            methodParameterType:    { [parameter:   string]: string };
-            methodReturnType:       { [method:      string]: string };
-            propertyType:           { [property:    string]: string };
+            namespaceAsType:                { [namespace:   string]: string },
+            methodParameterType:            { [parameter:   string]: string };
+            methodReturnType:               { [method:      string]: string };
+            propertyType:                   { [property:    string]: string };
+            methodOverridesNotCompatible:   string[];
         }
     }
 }

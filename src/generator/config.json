@@ -114,6 +114,10 @@
             , "propertyType": {
                 
             }
+
+            , "methodOverridesNotCompatible": [
+                "sap.ui.commons.DropdownBox.onAfterRendering"
+            ]
         }
     }
 }

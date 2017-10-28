@@ -36,6 +36,19 @@ export default class Method extends TreeNode {
     public generateTypeScriptCode(output: string[]): void {
         this.printTsDoc(output);
         this.printMethodOverloads(output, this.parameters || []);
+        this.printCompatibilityMethodOverload(output);
+    }
+
+    private printCompatibilityMethodOverload(output: string[]): void {
+        if (this.config.replacements.specific.methodOverridesNotCompatible.indexOf(this.fullName) > -1) {
+            let symbol: ui5.Parameter = {
+                name: "args",
+                type: "any[]",
+                spread: true
+            };
+            let comment = "This method overload is here just for compatibility with the overrided methods in base classes";
+            this.print(output, [new Parameter(this.config, symbol, this.fullName)], comment);
+        }
     }
 
     private printMethodOverloads(output: string[], parameters: Parameter[]): void {
@@ -52,6 +65,10 @@ export default class Method extends TreeNode {
             }
         }
 
+        this.print(output, parameters);
+    }
+
+    private print(output: string[], parameters: Parameter[], comment?: string): void {
         let declaration: string;
 
         switch (this.parentKind) {
@@ -70,9 +87,11 @@ export default class Method extends TreeNode {
                 throw new Error(`UI5 kind '${this.parentKind}' cannot have methods.`);
         }
 
+        comment = comment ? ` // ${comment}` : "";
+
         let parametersCode = parameters.map(p => p.getTypeScriptCode());
         let returnType = this.name !== "constructor" ? `: ${this.returnValue.type}` : "";
-        output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")})${returnType};\r\n`);
+        output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")})${returnType};${comment}\r\n`);
     }
 
     protected printTsDoc(output: string[]): void {
