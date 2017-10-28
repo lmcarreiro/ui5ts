@@ -118,7 +118,7 @@ export default class Class extends TreeNode {
                     }
                 }
 
-                if (newReturnType) {
+                if (newReturnType && newReturnType !== "any") {
                     console.log(`${++Class.count} - ${method.fullName}: Replacing return type from '${method.returnValue.type}' to '${newReturnType}' to match the same method in base class '${baseClass.fullName}'.`);
                     method.returnValue.type = newReturnType;
                 }
