@@ -95,6 +95,9 @@
                 , "sap.m.FacetFilterList.setMode":                          "sap.m.FacetFilterList"
                 , "sap.m.Input.setWidth":                                   "sap.m.Input"
                 , "sap.m.MenuButton.setTooltip":                            "sap.m.MenuButton"
+                , "sap.m.SelectDialog.getDomRef":                           "HTMLElement"
+                , "sap.m.TableSelectDialog.getDomRef":                      "HTMLElement"
+                , "sap.m.ViewSettingsDialog.getDomRef":                     "HTMLElement"
                 , "sap.m.TimePicker.setMinutesStep":                        "sap.m.TimePicker"
                 , "sap.m.TimePicker.setSecondsStep":                        "sap.m.TimePicker"
                 , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
@@ -102,8 +105,10 @@
                 , "sap.ui.base.Object.getMetadata":                         "sap.ui.base.Metadata"
                 , "sap.ui.commons.AutoComplete.getListBox":                 "sap.ui.core.ID"
                 , "sap.ui.commons.Carousel.getFocusDomRef":                 "HTMLElement"
+                , "sap.ui.core.Element.getDomRef":                          "HTMLElement"
                 , "sap.ui.core.Element.getFocusDomRef":                     "HTMLElement"
                 , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
+                , "sap.ui.core.HTML.getDomRef":                             "HTMLElement"
             }
 
             , "propertyType": {
