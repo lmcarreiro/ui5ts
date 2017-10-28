@@ -6,7 +6,7 @@ import Parameter    from "./Parameter";
 
 export default class Method extends TreeNode {
 
-    private visibility: ui5.Visibility;
+    public visibility: ui5.Visibility;
     private static: boolean;
     private description: string;
     private parameters: Parameter[];

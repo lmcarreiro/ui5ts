@@ -120,15 +120,19 @@ export default class Class extends TreeNode {
                 }
 
                 if (newReturnType && newReturnType !== "any") {
-                    console.log(`${++Class.count} - ${method.fullName}: Replacing return type from '${method.returnValue.type}' to '${newReturnType}' to match the same method in base class '${baseClass.fullName}'.`);
+                    console.log(`${++Class.changesCount} - ${method.fullName}: Replacing return type from '${method.returnValue.type}' to '${newReturnType}' to match the same method in base class '${baseClass.fullName}'.`);
                     method.returnValue.type = newReturnType;
+                }
+
+                if (methodOverrided.visibility === ui5.Visibility.Public && method.visibility === ui5.Visibility.Protected) {
+                    method.visibility = ui5.Visibility.Public;
                 }
             }
         });
 
         Class.fixMethodsOverrides(subClass.fullName);
     }
-    private static count = 0;
+    private static changesCount = 0;
 
     private static findMethodInBaseClassHierarchy(baseClass: Class|undefined, name: string): Method|undefined {
         if (!baseClass) return;
