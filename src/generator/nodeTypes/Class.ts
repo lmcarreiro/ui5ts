@@ -1,5 +1,6 @@
 import * as ui5 from "../ui5api";
 import Config   from "../GeneratorConfig";
+import TypeUtil from "../util/TypeUtil";
 import TreeNode from "./base/TreeNode";
 import Property from "./Property";
 import Method   from "./Method";
@@ -21,7 +22,7 @@ export default class Class extends TreeNode {
         this.children = children;
 
         this.description = apiSymbol.description || "";
-        this.baseClass = apiSymbol.extends || "";
+        this.baseClass = apiSymbol.extends ? TypeUtil.replaceTypes(apiSymbol.extends, config, this.fullName)  : "";
         this.properties = (apiSymbol.properties || []).map(m => new Property(this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
         this.methods    = (apiSymbol.methods    || []).map(m => new Method  (this.config, m, this.fullName, indentationLevel + 1, ui5.Kind.Class));
 
