@@ -9,7 +9,7 @@ export default class Method extends TreeNode {
     public visibility: ui5.Visibility;
     private static: boolean;
     private description: string;
-    private parameters: Parameter[];
+    public parameters: Parameter[];
     public returnValue: { type: string, description: string };
 
     private parentKind: ui5.Kind;

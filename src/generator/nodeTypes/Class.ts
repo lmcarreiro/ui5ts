@@ -124,6 +124,12 @@ export default class Class extends TreeNode {
                     method.returnValue.type = newReturnType;
                 }
 
+                if (method.parameters.length < methodOverrided.parameters.length) {
+                    //TODO: write a smarter code. Check each parameter and only replace if necessary
+                    //console.log(`${++Class.changesCount} - ${method.fullName}: Replacing parameters to match the same method in base class '${baseClass.fullName}'.`);
+                    //method.parameters = methodOverrided.parameters;
+                }
+
                 if (methodOverrided.visibility === ui5.Visibility.Public && method.visibility === ui5.Visibility.Protected) {
                     method.visibility = ui5.Visibility.Public;
                 }
