@@ -101,6 +101,8 @@
                 , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
                 , "sap.ui.base.Object.getMetadata":                         "sap.ui.base.Metadata"
                 , "sap.ui.commons.AutoComplete.getListBox":                 "sap.ui.core.ID"
+                , "sap.ui.commons.Carousel.getFocusDomRef":                 "HTMLElement"
+                , "sap.ui.core.Element.getFocusDomRef":                     "HTMLElement"
                 , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
             }
 
