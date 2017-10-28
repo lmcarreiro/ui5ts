@@ -34,12 +34,14 @@
             , "domRef":                                             "HTMLElement"
             , "DomRef":                                             "HTMLElement"
             , "DomNode":                                            "HTMLElement"
+            , "DOMNode":                                            "HTMLElement"
             , "jQuery":                                             "JQuery"
             , "map":                                                "{ [key: string]: any }"
             , "Map":                                                "{ [key: string]: any }"
             , "ODataAnnotations~Source":                            "{ [key: string]: any }"
             , "{type:string,index:int}":                            "{type:string,index:number}"
             , "sap.m.IconTabBarSelectList":                         "sap.m.SelectList"
+            , "sap.ui.model.ClientTreeBinding":                     "sap.ui.model.TreeBinding"
             , "sap.ui.commons.form.SimpleFormLayout":               "sap.ui.layout.form.SimpleFormLayout"
             , "sap.ui.commons.TitleLevel":                          "sap.ui.core.TitleLevel"
             , "array.<array.<string>>":                             "string[][]"
@@ -85,12 +87,17 @@
             }
 
             , "methodReturnType": {
-                  "sap.m.MenuButton.setTooltip":                            "sap.m.MenuButton"
+                  "sap.m.ActionListItem.getMode":                           "string"
+                , "sap.m.ComboBox.selectText":                              "sap.m.ComboBox"
+                , "sap.m.FacetFilterList.setMode":                          "sap.m.FacetFilterList"
+                , "sap.m.Input.setWidth":                                   "sap.m.Input"
+                , "sap.m.MenuButton.setTooltip":                            "sap.m.MenuButton"
                 , "sap.m.TimePicker.setMinutesStep":                        "sap.m.TimePicker"
                 , "sap.m.TimePicker.setSecondsStep":                        "sap.m.TimePicker"
                 , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
                 , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
                 , "sap.ui.base.Object.getMetadata":                         "sap.ui.base.Metadata"
+                , "sap.ui.commons.AutoComplete.getListBox":                 "sap.ui.core.ID"
                 , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
             }
 
