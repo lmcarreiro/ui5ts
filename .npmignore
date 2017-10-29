@@ -3,3 +3,4 @@
 .gitattributes
 tsconfig.json
 src/generator
+ui5ts-*.tgz
