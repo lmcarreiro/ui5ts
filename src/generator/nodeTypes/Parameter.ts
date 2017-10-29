@@ -9,6 +9,7 @@ export default class Parameter {
     private name: string;
     private type: string;
     private optional: boolean;
+    private spread: boolean;
     private description: string;
 
     constructor(config: Config, parameter: ui5.Parameter, parentName: string) {
@@ -21,11 +22,12 @@ export default class Parameter {
         this.name = parameter.name;
         this.type = TypeUtil.replaceTypes(parameterTypeReplacement || parameter.type, config, parameterFullName);
         this.optional = parameter.optional || false;
+        this.spread = parameter.spread || false;
         this.description = parameter.description || "";
     }
 
     public getTypeScriptCode(): string {
-        return `${this.name.replace(/<[^>]+>/g, "")}${this.optional ? "?" : ""}: ${this.type}`;
+        return `${this.spread ? "..." : ""}${this.name.replace(/<[^>]+>/g, "")}${this.optional ? "?" : ""}: ${this.type}`;
     }
 
     public getTsDoc(): string {

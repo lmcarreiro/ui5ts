@@ -168,6 +168,7 @@ export interface Parameter {
     description?: string;
     defaultValue?: any;
     parameterProperties?: ParameterPropertyObject;
+    spread?: boolean;
 }
 
 export interface ParameterPropertyObject {

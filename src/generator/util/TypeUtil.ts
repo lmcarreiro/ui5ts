@@ -12,7 +12,7 @@ export default {
 
             // warnings when using types that could be more specific
             if (replacement && config.replacements.warnings.indexOf(replacement) > -1) {
-                console.log(`Replacing '${t}'${t !== type ? ` (in '${type}')` : ""} with '${replacement}' in '${name}'.`);
+                //console.log(`Replacing '${t}'${t !== type ? ` (in '${type}')` : ""} with '${replacement}' in '${name}'.`);
             }
 
             t = replacement || t;

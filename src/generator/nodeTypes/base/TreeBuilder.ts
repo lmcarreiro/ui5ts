@@ -8,10 +8,12 @@ import Enum         from "../Enum";
 
 export default class TreeBuilder {
 
-    public static createFromSymbolsArray(config: Config, symbols: ui5.Symbol[]): TreeNode
+    public static createFromSymbolsArray(config: Config, symbols: ui5.Symbol[]): TreeNode[]
     {
-        let root = TreeBuilder.createNodeChildren(config, symbols, 0)[0];
-        return root;
+        let rootNodes = TreeBuilder.createNodeChildren(config, symbols, 0);
+        Class.fixMethodsOverrides();
+
+        return rootNodes;
     }
 
     private static createNode(config: Config, symbol: ui5.Symbol, children: TreeNode[], indentationLevel: number): TreeNode {
