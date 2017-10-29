@@ -116,7 +116,23 @@
             }
 
             , "methodOverridesNotCompatible": [
-                "sap.ui.commons.DropdownBox.onAfterRendering"
+                  "sap.ui.commons.DropdownBox.onAfterRendering"
+                , "sap.ui.core.mvc.XMLView.registerPreprocessor"
+                , "sap.ui.model.analytics.AnalyticalBinding.getRootContexts"
+                , "sap.ui.model.analytics.AnalyticalBinding.hasChildren"
+                , "sap.ui.model.CompositeDataState.getControlMessages"
+                , "sap.ui.model.CompositeType.parseValue"
+                , "sap.ui.model.odata.ODataMessageParser.parse"
+                , "sap.ui.model.odata.v2.ODataTreeBinding.getNodeContexts"
+                , "sap.ui.model.odata.v2.ODataTreeBinding.getRootContexts"
+                , "sap.ui.model.odata.v4.ODataContextBinding.refresh"
+                , "sap.ui.model.odata.v4.ODataListBinding.filter"
+                , "sap.ui.model.odata.v4.ODataListBinding.sort"
+                , "sap.ui.model.odata.v4.ODataListBinding.refresh"
+                , "sap.ui.model.odata.v4.ODataModel.bindContext"
+                , "sap.ui.model.odata.v4.ODataModel.bindList"
+                , "sap.ui.model.odata.v4.ODataModel.refresh"
+                , "sap.ui.model.odata.v4.ODataPropertyBinding.refresh"
             ]
         }
     }

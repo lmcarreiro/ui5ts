@@ -47,7 +47,7 @@ export default class Method extends TreeNode {
                 spread: true
             };
             let comment = "This method overload is here just for compatibility with the overrided methods in base classes";
-            this.print(output, [new Parameter(this.config, symbol, this.fullName)], comment);
+            this.print(output, [new Parameter(this.config, symbol, this.fullName)], "any", comment);
         }
     }
 
@@ -65,10 +65,10 @@ export default class Method extends TreeNode {
             }
         }
 
-        this.print(output, parameters);
+        this.print(output, parameters, this.returnValue.type);
     }
 
-    private print(output: string[], parameters: Parameter[], comment?: string): void {
+    private print(output: string[], parameters: Parameter[], returnType: string, comment?: string): void {
         let declaration: string;
 
         switch (this.parentKind) {
@@ -90,7 +90,7 @@ export default class Method extends TreeNode {
         comment = comment ? ` // ${comment}` : "";
 
         let parametersCode = parameters.map(p => p.getTypeScriptCode());
-        let returnType = this.name !== "constructor" ? `: ${this.returnValue.type}` : "";
+        returnType = this.name !== "constructor" ? `: ${returnType}` : "";
         output.push(`${this.indentation}${declaration}${this.name}(${parametersCode.join(", ")})${returnType};${comment}\r\n`);
     }
 
