@@ -20,18 +20,26 @@ export default class Generator
 
     public generate(): void
     {
-        console.log(`Starting exports generation...`);
+        var versions = this.config.input.versions;
 
-        var requests = this.config.input.namespaces.map(url => this.getApiJson(url));
-        
-        console.log(`All requests made.`);
 
-        Promise.all(requests)
-            .then(apiList => this.execute(apiList))
-            .catch(error => {
-                console.log("\x1b[31m", `\n\n  Error: ${error}\n\n`);
-                process.exit(1);
-            });
+    }
+
+    private generateVersion(version: string): void {
+        return new Promise<void>(() => {
+            console.log(`Starting exports generation...`);
+
+            var requests = this.config.input.namespaces.map(url => this.getApiJson(url));
+            
+            console.log(`All requests made.`);
+
+            Promise.all(requests)
+                .then(apiList => this.execute(apiList))
+                .catch(error => {
+                    console.log("\x1b[31m", `\n\n  Error: ${error}\n\n`);
+                    process.exit(1);
+                });
+        });
     }
     
     private getApiJson(namespace: string): Promise<ui5.API>
