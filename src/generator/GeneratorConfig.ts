@@ -11,6 +11,7 @@ export default interface GeneratorConfig {
         jsonLocation:   string,
         namespaces:     string[],
     },
+    ignore: string[],
     replacements: {
         global:     { [type: string]: string },
         warnings:    string[],

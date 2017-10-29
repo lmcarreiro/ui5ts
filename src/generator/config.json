@@ -24,6 +24,9 @@
             , "sap/uxap"
         ]
     },
+    "ignore": [
+        "jQuery.Event"
+    ],
     "replacements": {
         "global": {
               "function":                                           "Function"
@@ -57,6 +60,7 @@
             , "Promise":                                            "Promise<any>"
             , "jQuery.Promise":                                     "JQueryPromise<any>"
             , "jQuery.promise":                                     "JQueryPromise<any>"
+            , "jQuery.Event":                                       "JQueryEventObject"
             , "Generator":                                          "IterableIterator<any>"
             , "sap.ui.core.support.Support":                        "any"
             , "sap.ui.test.qunit":                                  "any"

@@ -36,20 +36,22 @@ export default class TreeBuilder {
             .forEach(n => namespaces.add(n));
 
         for (var namespace of namespaces) {
-            var parentSymbol = symbols.find(s => s.name === namespace) || <ui5.SymbolNamespace>{
-                kind: ui5.Kind.Namespace
-                , visibility: ui5.Visibility.Public
-                , name: namespace
-                , basename: namespace.replace(/^.*[.]/, "")
-                , module: ""
-                , resource: ""
-            };
-            var childrenSymbols = symbols.filter(s => s.name.startsWith(namespace + "."));
+            if (config.ignore.indexOf(namespace) === -1) {
+                var parentSymbol = symbols.find(s => s.name === namespace) || <ui5.SymbolNamespace>{
+                    kind: ui5.Kind.Namespace
+                    , visibility: ui5.Visibility.Public
+                    , name: namespace
+                    , basename: namespace.replace(/^.*[.]/, "")
+                    , module: ""
+                    , resource: ""
+                };
+                var childrenSymbols = symbols.filter(s => s.name.startsWith(namespace + "."));
 
-            var children = TreeBuilder.createNodeChildren(config, childrenSymbols, indentationLevel + 1);
-            var newNode = TreeBuilder.createNode(config, parentSymbol, children, indentationLevel);
+                var children = TreeBuilder.createNodeChildren(config, childrenSymbols, indentationLevel + 1);
+                var newNode = TreeBuilder.createNode(config, parentSymbol, children, indentationLevel);
 
-            nodes.push(newNode);
+                nodes.push(newNode);
+            }
         }
 
         return nodes;
