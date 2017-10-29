@@ -1,19 +1,22 @@
 {
     "compilerOptions": {
-        "target": "es2015",
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "target": "es5",
+        "module": "none",
+        "moduleResolution": "classic",
         "experimentalDecorators": true,
         "alwaysStrict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "declaration": true,
+        "outFile": "../../ui5ts.js"
     },
     "include": [
         "./",
-        "node_modules/@types"
+        "node_modules/@types",
+        "../../types"
     ],
     "exclude": [
         "node_modules",

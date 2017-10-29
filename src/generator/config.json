@@ -1,0 +1,143 @@
+{
+    "output": {
+        "exportsPath":      "./exports/",
+        "definitionsPath":  "./types/",
+        "indentation":      "    "
+    },
+    "input": {
+        "runLocal":     true,
+        "remoteUrl":    "https://sapui5.hana.ondemand.com/test-resources",
+        "localPath":    "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.10/test-resources",
+        "jsonLocation": "designtime/api.json",
+        "namespaces": [
+              "sap/m"
+            , "sap/tnt"
+            , "sap/ui/commons"
+            , "sap/ui/core"
+            , "sap/ui/demokit"
+            , "sap/ui/dt"
+            , "sap/ui/layout"
+            , "sap/ui/suite"
+            , "sap/ui/table"
+            , "sap/ui/unified"
+            , "sap/ui/ux3"
+            , "sap/uxap"
+        ]
+    },
+    "ignore": [
+        "jQuery.Event"
+    ],
+    "replacements": {
+        "global": {
+              "function":                                           "Function"
+            , "String":                                             "string"
+            , "int":                                                "number"
+            , "integer":                                            "number"
+            , "float":                                              "number"
+            , "Number":                                             "number"
+            , "Boolean":                                            "boolean"
+            , "DOMRef":                                             "HTMLElement"
+            , "domRef":                                             "HTMLElement"
+            , "DomRef":                                             "HTMLElement"
+            , "DomNode":                                            "HTMLElement"
+            , "DOMNode":                                            "HTMLElement"
+            , "jQuery":                                             "JQuery"
+            , "map":                                                "{ [key: string]: any }"
+            , "Map":                                                "{ [key: string]: any }"
+            , "ODataAnnotations~Source":                            "{ [key: string]: any }"
+            , "{type:string,index:int}":                            "{type:string,index:number}"
+            , "sap.m.IconTabBarSelectList":                         "sap.m.SelectList"
+            , "sap.ui.model.ClientTreeBinding":                     "sap.ui.model.TreeBinding"
+            , "sap.ui.commons.form.SimpleFormLayout":               "sap.ui.layout.form.SimpleFormLayout"
+            , "sap.ui.commons.TitleLevel":                          "sap.ui.core.TitleLevel"
+            , "array.<array.<string>>":                             "string[][]"
+            , "{undefined}":                                        "undefined"
+            , "undefined":                                          "any"
+            , "object":                                             "any"
+            , "*":                                                  "any"
+            , "array":                                              "any[]"
+            , "Array":                                              "any[]"
+            , "Promise":                                            "Promise<any>"
+            , "jQuery.Promise":                                     "JQueryPromise<any>"
+            , "jQuery.promise":                                     "JQueryPromise<any>"
+            , "jQuery.Event":                                       "JQueryEventObject"
+            , "Generator":                                          "IterableIterator<any>"
+            , "sap.ui.core.support.Support":                        "any"
+            , "sap.ui.test.qunit":                                  "any"
+        },
+        "warnings": ["Function", "any", "any[]", "Promise<any>", "JQueryPromise<any>", "IterableIterator<any>"],
+        "specific": {
+            "namespaceAsType": {
+                  "sap.ui.commons.SplitterSize":                            "string"
+                , "sap.ui.core.BusyIndicator":                              "{class}"
+                , "sap.ui.core.Collision":                                  "{enum}"
+                , "sap.ui.core.CSSSize":                                    "string"
+                , "sap.ui.core.CSSColor":                                   "string"
+                , "sap.ui.core.Dock":                                       "{enum}"
+                , "sap.ui.core.ID":                                         "string"
+                , "sap.ui.core.Percentage":                                 "string"
+                , "sap.ui.core.Popup.Dock":                                 "{enum}"
+                , "sap.ui.core.URI":                                        "string"
+                , "sap.ui.layout.form.GridElementCells":                    "string"
+                , "sap.ui.layout.GridIndent":                               "string"
+                , "sap.ui.layout.GridSpan":                                 "string"
+                , "sap.uxap.BlockBaseColumnLayout":                         "\"auto\"|1|2|3|4"
+            }
+
+            , "methodParameterType": {
+                  "sap.ui.base.ManagedObject.propagateMessages.aMessages":  "string[]"
+                , "sap.m.P13nConditionPanel.setKeyFields.aKeyFields":       "{ key: string, text: string }[]"
+                , "sap.ui.model.analytics.AnalyticalBinding.sort.aSorter":  "sap.ui.model.Sorter|sap.ui.model.Sorter[]"
+                , "sap.m.TimePicker.setMinutesStep.iStep":                  "number"
+                , "sap.m.TimePicker.setSecondsStep.iStep":                  "number"
+                , "sap.ui.extensionpoint.fnCreateDefaultContent":           "() => sap.ui.core.Control[]"
+            }
+
+            , "methodReturnType": {
+                  "sap.m.ActionListItem.getMode":                           "string"
+                , "sap.m.ComboBox.selectText":                              "sap.m.ComboBox"
+                , "sap.m.FacetFilterList.setMode":                          "sap.m.FacetFilterList"
+                , "sap.m.Input.setWidth":                                   "sap.m.Input"
+                , "sap.m.MenuButton.setTooltip":                            "sap.m.MenuButton"
+                , "sap.m.SelectDialog.getDomRef":                           "HTMLElement"
+                , "sap.m.TableSelectDialog.getDomRef":                      "HTMLElement"
+                , "sap.m.ViewSettingsDialog.getDomRef":                     "HTMLElement"
+                , "sap.m.TimePicker.setMinutesStep":                        "sap.m.TimePicker"
+                , "sap.m.TimePicker.setSecondsStep":                        "sap.m.TimePicker"
+                , "sap.m.OverflowToolbar._getVisibleAndNonOverflowContent": "sap.ui.core.Control[]"
+                , "sap.m.P13nConditionPanel.getKeyFields":                  "{ key: string, text: string }[]"
+                , "sap.ui.base.Object.getMetadata":                         "sap.ui.base.Metadata"
+                , "sap.ui.commons.AutoComplete.getListBox":                 "sap.ui.core.ID"
+                , "sap.ui.commons.Carousel.getFocusDomRef":                 "HTMLElement"
+                , "sap.ui.core.Element.getDomRef":                          "HTMLElement"
+                , "sap.ui.core.Element.getFocusDomRef":                     "HTMLElement"
+                , "sap.ui.core.Element._getMediaContainerWidth":            "number|{undefined}"
+                , "sap.ui.core.HTML.getDomRef":                             "HTMLElement"
+            }
+
+            , "propertyType": {
+                
+            }
+
+            , "methodOverridesNotCompatible": [
+                  "sap.ui.commons.DropdownBox.onAfterRendering"
+                , "sap.ui.core.mvc.XMLView.registerPreprocessor"
+                , "sap.ui.model.analytics.AnalyticalBinding.getRootContexts"
+                , "sap.ui.model.analytics.AnalyticalBinding.hasChildren"
+                , "sap.ui.model.CompositeDataState.getControlMessages"
+                , "sap.ui.model.CompositeType.parseValue"
+                , "sap.ui.model.odata.ODataMessageParser.parse"
+                , "sap.ui.model.odata.v2.ODataTreeBinding.getNodeContexts"
+                , "sap.ui.model.odata.v2.ODataTreeBinding.getRootContexts"
+                , "sap.ui.model.odata.v4.ODataContextBinding.refresh"
+                , "sap.ui.model.odata.v4.ODataListBinding.filter"
+                , "sap.ui.model.odata.v4.ODataListBinding.sort"
+                , "sap.ui.model.odata.v4.ODataListBinding.refresh"
+                , "sap.ui.model.odata.v4.ODataModel.bindContext"
+                , "sap.ui.model.odata.v4.ODataModel.bindList"
+                , "sap.ui.model.odata.v4.ODataModel.refresh"
+                , "sap.ui.model.odata.v4.ODataPropertyBinding.refresh"
+            ]
+        }
+    }
+}

@@ -18,16 +18,21 @@
         "url": "https://github.com/lmcarreiro/ui5ts/issues"
     },
     "devDependencies": {
+        "@types/gulp": "^4.0.4",
         "@types/jquery": "^2.0.47",
         "@types/node": "^8.0.33",
         "@types/openui5": "^1.40.2",
         "@types/request": "^2.0.4",
-        "typescript": "^2.5.2",
-        "request": "^2.83.0"
+        "gulp": "^3.9.1",
+        "gulp-typescript": "^3.2.2",
+        "gulpclass": "^0.1.2",
+        "request": "^2.83.0",
+        "typescript": "^2.5.2"
     },
     "scripts": {
-        "build": "tsc",
-        "exports": "npm run exports:build && node src/generator/index.js",
-        "exports:build": "tsc -p src/generator/tsconfig.json"
+        "start": "npm run generate && npm run build:lib",
+        "generate": "npm run build:generator && node src/generator/index.js",
+        "build:generator": "tsc -p src/generator/tsconfig.json",
+        "build:lib": "tsc -p src/lib/tsconfig.json"
     }
 }

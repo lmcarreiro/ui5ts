@@ -1,0 +1,17 @@
+export enum Dock {
+    BeginTop        = "begin top",
+    BeginCenter     = "begin center",
+    BeginBottom     = "begin bottom",
+    LeftTop         = "left top",
+    LeftCenter      = "left center",
+    LeftBottom      = "left bottom",
+    CenterTop       = "center top",
+    CenterCenter    = "center center",
+    CenterBottom    = "center bottom",
+    RightTop        = "right top",
+    RightCenter     = "right center",
+    RightBottom     = "right bottom",
+    EndTop          = "end top",
+    EndCenter       = "end center",
+    EndBottom       = "end bottom",
+}

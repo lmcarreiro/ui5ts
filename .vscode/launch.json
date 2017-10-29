@@ -4,7 +4,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Exports",
+            "name": "Generator",
             "program": "${workspaceRoot}/src/generator/index.js"
         }
     ]
