@@ -1,30 +1,36 @@
 # ui5ts
 
-A ridiculously simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes.
+A simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes
 
+
+## Release Notes
+
+**0.2.0** - Create my own UI5 definitions generator, because the available ones didn't fit my needs (you can still use another, just set it up in your `tsconfig.json`)
+
+**0.1.\*** - Generated exports files for all namespace sap.* objects, to make possible import these objects without creating a single `<object>.d.ts` for each imported object
+
+**0.0.\*** - Just a draft
 
 ## How to use
 
 It is very simple, make it work with only 4 steps:
 
-1. Install *ui5ts*, *typescript* and *@types/openui5* npm packages
+1. Install *ui5ts*, *typescript* and *@types/jquery* npm packages
 2. Add a reference to the "library" in your index.html
 3. Add the required TypeScript options in the tsconfig.json
 4. Change your `<class-name>.js` to a `<class-name>.ts`
 
 Check this Master-Detail example app https://github.com/lmcarreiro/ui5-typescript-example that is already working with ui5+typescript.
 
-### 1) Install *ui5ts*, *typescript* and *@types/openui5* npm packages
+### 1) Install *ui5ts*, *typescript* and *@types/jquery* npm packages
 
 ```
-npm install @types/openui5 --save-dev
+npm install @types/jquery --save-dev
 npm install typescript --save-dev
 npm install ui5ts --save
 ```
 
-If you already have your own \*.d.ts declaration files of sap.* ui5 namespaces, you won't need to install the *@types/openui5* npm package.
-
-### 2) Add a reference to the "library" in your index.html
+### 2) Add a reference to the library in your index.html
 
 Put a reference to the `ui5ts.js` script in your `index.html` file using a script tag `<script src="node_modules/ui5ts/ui5ts.js" type="text/javascript"></script>` between the `sap-ui-core.js` script tag and the `sap.ui.getCore().attachInit()` call:
 
@@ -49,6 +55,7 @@ Put a reference to the `ui5ts.js` script in your `index.html` file using a scrip
  - compilerOptions.baseUrl = `"./"` *(your project root, if you change this value, you need to change the paths too)*
  - compilerOptions.paths = `{ ... }` *(your paths, relative to your baseUrl, check the example bellow)*
  - files = `["node_modules/ui5ts/ui5ts.d.ts", ...]`
+ - include = `["node_modules/ui5ts/ui5-types", "node_modules/@types"]`
 
 Example of `tsconfig.json` file:
 ```json
@@ -74,7 +81,8 @@ Example of `tsconfig.json` file:
     ],
     "include": [
         "src/**/*",
-        "node_modules/@types"
+        "node_modules/@types",
+        "node_modules/ui5ts/ui5-types"
     ],
     "exclude": [
         "node_modules",
