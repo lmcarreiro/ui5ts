@@ -1,13 +1,11 @@
-export default interface GeneratorConfig {
+export default interface Config {
     output: {
         exportsPath:        string,
         definitionsPath:    string,
-        indentation:        string
+        indentation:        string,
     },
     input: {
-        runLocal:       boolean,
-        remoteUrl:      string,
-        localPath:      string,
+        apiBaseUrl:     string,
         jsonLocation:   string,
         namespaces:     string[],
     },
@@ -17,10 +15,15 @@ export default interface GeneratorConfig {
         warnings:    string[],
         specific:   {
             namespaceAsType:                { [namespace:   string]: string },
-            methodParameterType:            { [parameter:   string]: string };
-            methodReturnType:               { [method:      string]: string };
-            propertyType:                   { [property:    string]: string };
-            methodOverridesNotCompatible:   string[];
+            methodParameterType:            { [parameter:   string]: string },
+            methodReturnType:               { [method:      string]: string },
+            propertyType:                   { [property:    string]: string },
+            methodOverridesNotCompatible:   string[],
         }
     }
+}
+
+export interface LocalConfig {
+    runLocal: boolean,
+    path:     string,
 }

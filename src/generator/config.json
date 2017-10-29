@@ -1,13 +1,11 @@
 {
     "output": {
         "exportsPath":      "./exports/",
-        "definitionsPath":  "./types/",
+        "definitionsPath":  "./ui5-types/",
         "indentation":      "    "
     },
     "input": {
-        "runLocal":     true,
-        "remoteUrl":    "https://sapui5.hana.ondemand.com/test-resources",
-        "localPath":    "C:/Users/leonardo/Documents/sapui5/sapui5-sdk-1.48.10/test-resources",
+        "apiBaseUrl":   "https://sapui5.hana.ondemand.com/test-resources",
         "jsonLocation": "designtime/api.json",
         "namespaces": [
               "sap/m"

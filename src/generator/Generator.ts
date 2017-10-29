@@ -1,17 +1,21 @@
-import * as request         from 'request';
-import * as fs              from 'fs';
-import * as ui5             from './ui5api';
-import TreeNode             from './nodeTypes/base/TreeNode';
-import TreeBuilder          from './nodeTypes/base/TreeBuilder';
-import GeneratorConfig      from './GeneratorConfig';
+import * as request             from 'request';
+import * as fs                  from 'fs';
+import * as ui5                 from './ui5api';
+import TreeNode                 from './nodeTypes/base/TreeNode';
+import TreeBuilder              from './nodeTypes/base/TreeBuilder';
+import Config, { LocalConfig }  from './GeneratorConfig';
 
 export default class Generator
 {
-    private config: GeneratorConfig;
+    private config: Config;
+    private localConfig: LocalConfig;
 
-    public constructor(configPath: string) {
-        var jsonConfig = fs.readFileSync(configPath, { encoding: "utf-8" });
-        this.config = JSON.parse(jsonConfig);
+    public constructor(configPath: string, localConfigPath: string) {
+        var jsonConfig      = fs.readFileSync(configPath, { encoding: "utf-8" });
+        var localJsonConfig = fs.readFileSync(localConfigPath, { encoding: "utf-8" });
+
+        this.config      = JSON.parse(jsonConfig);
+        this.localConfig = JSON.parse(localJsonConfig);
     }
 
     public generate(): void
@@ -32,8 +36,8 @@ export default class Generator
     
     private getApiJson(namespace: string): Promise<ui5.API>
     {
-        if (this.config.input.runLocal) {
-            let path = `${this.config.input.localPath}/${namespace}/${this.config.input.jsonLocation}`.replace(/\//g, "\\");
+        if (this.localConfig.runLocal) {
+            let path = `${this.localConfig.path}/${namespace}/${this.config.input.jsonLocation}`.replace(/\//g, "\\");
 
             console.log(`Making local file '${path}'`);
 
@@ -51,7 +55,7 @@ export default class Generator
             });
         }
         else {
-            let url = `${this.config.input.remoteUrl}/${namespace}/${this.config.input.jsonLocation}`;
+            let url = `${this.config.input.apiBaseUrl}/${namespace}/${this.config.input.jsonLocation}`;
             
             console.log(`Making request to '${url}'`);
 
