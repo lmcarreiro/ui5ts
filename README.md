@@ -54,8 +54,7 @@ Put a reference to the `ui5ts.js` script in your `index.html` file using a scrip
  - compilerOptions.experimentalDecorators = `true` *(just to avoid typescript warning/error)*
  - compilerOptions.baseUrl = `"./"` *(your project root, if you change this value, you need to change the paths too)*
  - compilerOptions.paths = `{ ... }` *(your paths, relative to your baseUrl, check the example bellow)*
- - files = `["node_modules/ui5ts/ui5ts.d.ts", ...]`
- - include = `["node_modules/ui5ts/ui5-types", "node_modules/@types"]`
+ - files = `["node_modules/ui5ts/ui5ts.d.ts", "node_modules/ui5ts/ui5-types/sap.d.ts", "node_modules/ui5ts/ui5-types/jQuery.d.ts", ...]`
 
 Example of `tsconfig.json` file:
 ```json
@@ -77,12 +76,13 @@ Example of `tsconfig.json` file:
         }
     },
     "files": [
-        "node_modules/ui5ts/ui5ts.d.ts"
+        "node_modules/ui5ts/ui5ts.d.ts",
+        "node_modules/ui5ts/ui5-types/sap.d.ts",
+        "node_modules/ui5ts/ui5-types/jQuery.d.ts"
     ],
     "include": [
         "src/**/*",
-        "node_modules/@types",
-        "node_modules/ui5ts/ui5-types"
+        "node_modules/@types"
     ],
     "exclude": [
         "node_modules",
