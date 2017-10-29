@@ -1,7 +1,7 @@
 {
-    "version": "0.1.4",
+    "version": "0.2.0",
     "name": "ui5ts",
-    "description": "a ridiculously simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes",
+    "description": "A simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes",
     "keywords": [
         "ui5",
         "openui5",
@@ -18,14 +18,9 @@
         "url": "https://github.com/lmcarreiro/ui5ts/issues"
     },
     "devDependencies": {
-        "@types/gulp": "^4.0.4",
         "@types/jquery": "^2.0.47",
         "@types/node": "^8.0.33",
-        "@types/openui5": "^1.40.2",
         "@types/request": "^2.0.4",
-        "gulp": "^3.9.1",
-        "gulp-typescript": "^3.2.2",
-        "gulpclass": "^0.1.2",
         "request": "^2.83.0",
         "typescript": "^2.5.2"
     },
