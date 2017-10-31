@@ -20,32 +20,42 @@ export default class Generator
 
     public generate(): void
     {
-        var versions = this.config.input.versions;
-
-
+        let versions = this.config.input.versions;
+        this.generateVersions(versions);
     }
 
-    private generateVersion(version: string): void {
-        return new Promise<void>(() => {
-            console.log(`Starting exports generation...`);
+    private generateVersions(versions: string[]): void {
+        if (versions.length) {
+            let version = versions[0];
+            
+            console.log(`Starting generation of version ${version}...`);
 
-            var requests = this.config.input.namespaces.map(url => this.getApiJson(url));
+            var requests = this.config.input.namespaces.map(namespace => this.getApiJson(namespace, version));
             
             console.log(`All requests made.`);
 
             Promise.all(requests)
-                .then(apiList => this.execute(apiList))
+                .then(apiList => {
+                    this.execute(apiList, version);
+                    console.log(`Generation of version ${version} complete.`);
+
+                    this.generateVersions(versions.slice(1))
+                })
                 .catch(error => {
                     console.log("\x1b[31m", `\n\n  Error: ${error}\n\n`);
                     process.exit(1);
                 });
-        });
+        }
     }
     
-    private getApiJson(namespace: string): Promise<ui5.API>
+    private getApiJson(namespace: string, version: string): Promise<ui5.API>
     {
+        const versionMarker = "{{VERSION}}";
+
         if (this.localConfig.runLocal) {
-            let path = `${this.localConfig.path}/${namespace}/${this.config.input.jsonLocation}`.replace(/\//g, "\\");
+            let path = `${this.localConfig.path}/${namespace}/${this.config.input.jsonLocation}`
+                .replace(/\//g, "\\")
+                .replace(versionMarker, version);
 
             console.log(`Making local file '${path}'`);
 
@@ -63,7 +73,8 @@ export default class Generator
             });
         }
         else {
-            let url = `${this.config.input.apiBaseUrl}/${namespace}/${this.config.input.jsonLocation}`;
+            let url = `${this.config.input.apiBaseUrl}/${namespace}/${this.config.input.jsonLocation}`
+                .replace(versionMarker, version);
             
             console.log(`Making request to '${url}'`);
 
@@ -82,13 +93,13 @@ export default class Generator
         }
     }
     
-    private execute(apiList: ui5.API[]): void
+    private execute(apiList: ui5.API[], version: string): void
     {
         this.createExports(apiList);
-        this.createDefinitions(apiList);
+        this.createDefinitions(apiList, version);
     }
 
-    private createDefinitions(apiList: ui5.API[]): void
+    private createDefinitions(apiList: ui5.API[], version: string): void
     {
         let allSymbols = apiList.map(api => api.symbols).reduce((a, b) => a.concat(b));
 
@@ -98,7 +109,7 @@ export default class Generator
         for (var node of rootNodes) {
             let output: string[] = [];
             let tsCode = node.generateTypeScriptCode(output);
-            this.createFile(`${this.config.output.definitionsPath}${node.fullName}.d.ts`, output.join(""));
+            this.createFile(`${this.config.output.definitionsPath}${version.replace(/[.]\d+$/, "")}/${node.fullName}.d.ts`, output.join(""));
         }
 
         // Uncomment this to see the details, statistics and example values of the different types of API members
