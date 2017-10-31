@@ -5,16 +5,28 @@ import TreeNode from "./base/TreeNode";
 import Property from "./Property";
 import Method   from "./Method";
 
-export default class Class extends TreeNode {
 
+
+
+// typescript bug?
+declare function f(a: string, c: string): void;
+function a(x: string, map1: Map<string, string>, map2: Map<string, string[]>): void {
+    let a = map1.get(x);
+    let b = map2.get(x);
+    if (a && b) {
+        b.forEach(c => f(a, c));
+    }
+}
+
+
+
+
+export default class Class extends TreeNode {
     private description: string;
     private baseClass: string;
     private properties: Property[];
     private methods: Method[];
     private children: TreeNode[];
-
-    private static instancesByName: { [className: string]: Class } = {};
-    private static instancesByBaseClass: { [baseClassName: string]: Class[] } = {};
 
     constructor(config: Config, apiSymbol: ui5.SymbolClass, children: TreeNode[], indentationLevel: number) {
         super(config, indentationLevel, apiSymbol);
@@ -30,16 +42,6 @@ export default class Class extends TreeNode {
             let constructorSymbol = Object.assign(apiSymbol.constructor, { name: "constructor" });
             let constructor = new Method(this.config, constructorSymbol, this.fullName, indentationLevel + 1, ui5.Kind.Class)
             this.methods = [constructor].concat(this.methods);
-        }
-
-        if (Class.instancesByName[this.fullName]) {
-            throw new Error(`Class '${this.fullName}' is already in the map.`);
-        }
-        Class.instancesByName[this.fullName] = this;
-
-        if (this.baseClass && this.baseClass.match(/\./)) {
-            Class.instancesByBaseClass[this.baseClass] = Class.instancesByBaseClass[this.baseClass] || [];
-            Class.instancesByBaseClass[this.baseClass].push(this);
         }
     }
 
@@ -81,18 +83,45 @@ export default class Class extends TreeNode {
         output.push(`${this.indentation}}\r\n`);
     }
 
-    public static fixMethodsOverrides(baseClassName?: string): void {
-        if (!baseClassName) {
-            for (let baseClassName in Class.instancesByBaseClass) {
-                if (Class.instancesByName[baseClassName] && !Class.instancesByName[baseClassName].baseClass) {
-                    Class.fixMethodsOverrides(baseClassName);
+    public static fixMethodsOverrides(nodes: TreeNode[]): void {
+        let instancesByName: Map<string, Class> = new Map();
+        let instancesByBaseClass: Map<string, Class[]> = new Map();
+
+        Class.fillInstancesMaps(nodes, instancesByName, instancesByBaseClass);
+
+        for (let baseClassName in instancesByBaseClass) {
+            let baseClass = instancesByName.get(baseClassName);
+            if (baseClass && !baseClass.baseClass) {
+                Class.fixMethodsOverridesByBaseClass(baseClassName, instancesByName, instancesByBaseClass);
+            }
+        }
+    }
+
+    private static fillInstancesMaps(nodes: TreeNode[], instancesByName: Map<string, Class>, instancesByBaseClass: Map<string, Class[]>): any {
+        for (let node of nodes) {
+            if (node instanceof Class) {
+                if (instancesByName.has(node.fullName)) {
+                    throw new Error(`Class '${node.fullName}' is already in the map.`);
+                }
+                instancesByName.set(node.fullName, node);
+
+                if (node.baseClass && node.baseClass.match(/\./)) {
+                    let arr = instancesByBaseClass.get(node.baseClass) || [];
+                    arr.push(node);
+                    instancesByBaseClass.set(node.baseClass, arr);
                 }
             }
-            return;
+            
+            let children = (<any>node).children;
+            if (children) {
+                this.fillInstancesMaps(children, instancesByName, instancesByBaseClass);
+            }
         }
+    }
 
-        let baseClass = Class.instancesByName[baseClassName];
-        let subClasses = Class.instancesByBaseClass[baseClassName];
+    private static fixMethodsOverridesByBaseClass(baseClassName: string, instancesByName: Map<string, Class>, instancesByBaseClass: Map<string, Class[]>): void {
+        let baseClass = instancesByName.get(baseClassName);
+        let subClasses = instancesByBaseClass.get(baseClassName);
         if (baseClass && subClasses) {
             subClasses.forEach(subClass => Class.fixMethodsOverridesFor(baseClass, subClass));
         }
@@ -120,7 +149,7 @@ export default class Class extends TreeNode {
                 }
 
                 if (newReturnType && newReturnType !== "any") {
-                    console.log(`${++Class.changesCount} - ${method.fullName}: Replacing return type from '${method.returnValue.type}' to '${newReturnType}' to match the same method in base class '${baseClass.fullName}'.`);
+                    //console.log(`${++Class.changesCount} - ${method.fullName}: Replacing return type from '${method.returnValue.type}' to '${newReturnType}' to match the same method in base class '${baseClass.fullName}'.`);
                     method.returnValue.type = newReturnType;
                 }
 
@@ -137,7 +166,7 @@ export default class Class extends TreeNode {
     private static findMethodInBaseClassHierarchy(baseClass: Class|undefined, name: string): Method|undefined {
         if (!baseClass) return;
 
-        let baseBaseClass = Class.instancesByName[baseClass.baseClass];
+        let baseBaseClass = instancesByName[baseClass.baseClass];
         return baseClass.methods.find(m => m.name === name) || Class.findMethodInBaseClassHierarchy(baseBaseClass, name);
     }
 
@@ -146,15 +175,15 @@ export default class Class extends TreeNode {
             return true;
         }
 
-        let baseClass = Class.instancesByName[baseType];
-        let subClass = Class.instancesByName[subType];
+        let baseClass = instancesByName[baseType];
+        let subClass = instancesByName[subType];
 
         if (baseClass && subClass) {
             do {
                 if (subClass.name === baseClass.name) {
                     return true;
                 }
-                subClass = Class.instancesByName[subClass.baseClass];
+                subClass = instancesByName[subClass.baseClass];
             } while(subClass);
         }
 
