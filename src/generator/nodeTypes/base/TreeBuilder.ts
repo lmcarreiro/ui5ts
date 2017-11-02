@@ -11,7 +11,7 @@ export default class TreeBuilder {
     public static createFromSymbolsArray(config: Config, symbols: ui5.Symbol[]): TreeNode[]
     {
         let rootNodes = TreeBuilder.createNodeChildren(config, symbols, 0);
-        Class.fixMethodsOverrides();
+        Class.fixMethodsOverrides(rootNodes);
 
         return rootNodes;
     }

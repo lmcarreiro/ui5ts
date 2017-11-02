@@ -13,10 +13,13 @@
         "declaration": true,
         "outFile": "../../ui5ts.js"
     },
+    "files": [  
+        "../../ui5-types/1.48/sap.d.ts",
+        "../../ui5-types/1.48/jQuery.d.ts"
+    ],
     "include": [
         "./",
-        "node_modules/@types",
-        "../../ui5-types"
+        "node_modules/@types"
     ],
     "exclude": [
         "node_modules",

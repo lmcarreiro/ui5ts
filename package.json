@@ -22,7 +22,7 @@
         "@types/node": "^8.0.33",
         "@types/request": "^2.0.4",
         "request": "^2.83.0",
-        "typescript": "^2.5.2"
+        "typescript": "^2.7.0-dev.20171031"
     },
     "scripts": {
         "prepack": "npm run generate && npm run build:lib",

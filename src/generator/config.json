@@ -5,8 +5,9 @@
         "indentation":      "    "
     },
     "input": {
-        "apiBaseUrl":   "https://sapui5.hana.ondemand.com/1.48.6/test-resources",
+        "apiBaseUrl":   "https://sapui5.hana.ondemand.com/{{VERSION}}/test-resources",
         "jsonLocation": "designtime/api.json",
+        "versions": ["1.46.12", "1.48.11"],
         "namespaces": [
               "sap/m"
             , "sap/tnt"

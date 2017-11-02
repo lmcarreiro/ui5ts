@@ -9,5 +9,6 @@
             "when": "$(basename).ts"
         },
         "node_modules": true
-    }
+    },
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

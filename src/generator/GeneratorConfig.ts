@@ -7,6 +7,7 @@ export default interface Config {
     input: {
         apiBaseUrl:     string,
         jsonLocation:   string,
+        versions:       string[],
         namespaces:     string[],
     },
     ignore: string[],
