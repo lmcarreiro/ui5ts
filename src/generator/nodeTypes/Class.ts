@@ -76,7 +76,7 @@ export default class Class extends TreeNode {
 
         Class.fillInstancesMaps(nodes, instancesByName, instancesByBaseClass);
 
-        for (const baseClassName in instancesByBaseClass) {
+        for (const baseClassName of instancesByBaseClass.keys()) {
             const baseClass = instancesByName.get(baseClassName);
             if (baseClass && !baseClass.baseClass) {
                 Class.fixMethodsOverridesByBaseClass(baseClassName, instancesByName, instancesByBaseClass);
