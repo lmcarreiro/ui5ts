@@ -1,5 +1,5 @@
 {
-    "version": "0.3.1",
+    "version": "0.4.0-dev.20180312",
     "name": "ui5ts",
     "description": "A simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes",
     "keywords": [
