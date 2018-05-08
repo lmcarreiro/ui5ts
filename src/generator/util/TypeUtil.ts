@@ -26,6 +26,11 @@ export default {
                 }
             }
 
+            // if method name starts with get and returns 'void', then change it to return 'any' instead
+            if (t === "void" && name.match(/.*[.]get[^.]*/)) {
+                t = "any";
+            }
+
             types[k] = t + (isArray ? "[]" : "");
         }
 

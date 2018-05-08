@@ -5,6 +5,10 @@ A simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and
 
 ## Release Notes
 
+**0.3.2** - Handle some UI5 API errors in the Docs, when method with names like get*Something* has `void` as return type. It is being replaced by `any` now. 
+
+**0.3.1** - Just fixed an error in this README instructions.
+
 **0.3.0** - Create definitions for more than one version of UI5 (just 1.46 and 1.48 for now). Published in https://github.com/lmcarreiro/ui5-typescript-definitions too. *Be carefull, now that there is these definitions inside the package and I have plans to make these definitions better (normally replacing an `any` type with a more specific one), **almost all new versions from now on may be a breaking change.***
 
 **0.2.0** - Create my own UI5 definitions generator, because the available ones didn't fit my needs (you can still use another, just set it up in your `tsconfig.json`).
