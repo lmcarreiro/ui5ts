@@ -2,6 +2,9 @@
 
 A simple adapter to develop SAPUI5 and OpenUI5 applications using TypeScript and ES2015 modules/classes
 
+## This Repo Is No Longer Maintained
+
+For a newer version supporting a more recent version of UI5, see https://github.com/neoprincie/ui5ts.
 
 ## Release Notes
 
